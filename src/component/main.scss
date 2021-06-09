@@ -1,0 +1,357 @@
+
+
+
+body{
+  background-color: #fff;
+  font-family: 'Roboto', sans-serif;
+  color: #666363;
+  h1, h2, h3, h4, h5, h6, p{
+    color: #666363;
+
+  }
+}
+
+
+
+
+
+
+
+.TopNavbar{
+  height: 68px;
+
+  background-color: #F1F0FD;
+  padding-left: 50px;
+  padding-right: 50px;
+  display: flex;justify-content: space-between;
+  align-items: center;
+  a{
+    img{
+      height: 25px;
+    }
+
+  }
+  a:nth-child(2){
+    background-color: #1F7BBF;
+
+    color: #fff;
+    border-radius: 25px;
+    width: 140px;
+  }
+}
+
+.Navbar{
+
+  padding-left: 50px;
+  padding-right: 50px;
+  background-color: #fff;
+  border-bottom: 2px solid #F1F0FD;
+  nav{
+    .navbar-brand{
+      img{
+        width: 200px;
+      }
+    }
+    .navbar-collapse{
+      .navbar-nav{
+        justify-content: space-between;
+        .nav-item{
+
+          .nav-link{
+
+            font-size: 14px;
+            color: #404040;
+          }
+        }
+      }
+    }
+  }
+}
+
+
+
+
+.login{
+  padding: 0;
+  margin: 0;
+  .row{
+    padding: 0;
+    margin: 0;
+    height: 100vh;
+    .col-md-5{
+      height: 100%;
+      padding: 50px;
+
+      display: flex;
+      align-items: center;
+      img{
+        //height: 100%;
+        width: 100%;
+      }
+    }
+    .col-md-7{
+      display: flex;
+      align-items: center;
+      justify-content: center;
+     .loginCard{
+
+       width: 320px;
+       h3{
+         color: #6A83DB  ;
+       }
+
+       p{
+
+         font-size: 18px;
+         margin-bottom: 40px;
+       }
+       form{
+         input{
+           margin-top: 20px;
+         }
+         button{
+           margin-top: 20px;
+           background-color: #6A83DB;
+           color: #fff;
+         }
+       }
+     }
+    }
+  }
+}
+
+.formAddButton{
+
+  background: #1F7BBF;
+
+  color: #fff;
+  border-radius: 10px;
+
+
+  margin-top: 30px;
+  width: 180px;
+}
+.formCancel{
+
+
+
+  color: #404040;
+  margin-top: 30px;
+
+  margin-left: 10px;
+  border: 2px solid #404040;
+  border-radius: 10px;
+
+  width: 180px;
+}
+
+.objectModal{
+  max-width: 980px;
+
+}
+  .mdi_close {
+    position: absolute;
+    right: 10px;
+    top: 5px;
+
+    img {
+      width: 30px;
+    }
+  }
+  .mdi_close:focus{
+    box-shadow: none;
+  }
+ .modal-content{
+   padding: 30px 50px;
+   .addObjectModal{
+
+
+
+
+
+
+
+   }
+ }
+
+
+ .createAccountModal{
+
+   height: 490px;
+   padding-bottom: 60px;
+
+   .formCancel{
+     margin-left: 30px;
+   }
+
+
+   .modal-content{
+     padding: 70px 50px;
+   }
+ }
+
+
+
+.Objects{
+  padding: 0 20px;
+
+
+
+
+
+
+
+  .objectHeader{
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 40px;
+    margin-top: 40px;
+    padding-left: 50px;
+    h2{
+
+      color: #404040;
+    }
+    .addObject{
+      color: #1F7BBF;
+
+      border: 1px solid #1F7BBF;
+      box-sizing: border-box;
+      border-radius: 25px;
+      width: 320px;
+      img{
+        width: 18px;
+        margin-right: 15px;
+        margin-top: -3px;
+      }
+    }
+    .activeObject{
+      border: 2px solid #45B76A;
+      border-radius: 25px;
+
+      color: #45B76A;
+
+      width: 180px;
+      img{
+        width: 8px;
+        margin-top: -2px;
+        margin-right: 10px;
+      }
+    }
+    .removeObject{
+      border: 2px solid #FF551C;
+      border-radius: 25px;
+
+      color: #FF551C;
+
+      width: 180px;
+      img{
+        width: 8px;
+        margin-top: -2px;
+        margin-right: 10px;
+      }
+    }
+  }
+
+
+
+
+
+  table{
+    width: 100%;
+    //box-shadow: 0px 0px 10px 5px rgba(0, 0, 0,  0.25);
+
+    border-radius: 10px;
+
+    overflow: hidden;
+
+    .tableHeader{
+
+
+      width: 100%;
+
+      height: 50px;
+      background-color:   #6A83DB;
+
+      th{
+        padding-right: 10px;
+
+        color: #fff;
+      }
+
+      .index{
+        width: 50px;
+        padding-left: 20px;
+      }
+    }
+    .tableBody{
+
+      td{
+        height: 50px;
+
+        font-size: 12px;
+        .arrow{
+          width: 15px;
+          margin-top: -3px;
+
+        }
+        .view, .edit, .delete{
+          border-radius: 5px;
+          margin-right: 10px;
+
+          font-size: 12px;
+          img{
+            width: 15px;
+
+            margin-right: 6px;
+            margin-top: -2px;
+          }
+        }
+
+        .view{
+          border: 2px solid #6A83DB;
+          color: #6A83DB;
+        }
+        .edit{
+          border: 2px solid #36C654;
+          color: #36C654;
+        }
+        .delete{
+          border: 2px solid  #FF6060;
+          color: #FF6060;
+        }
+        button:focus{
+          box-shadow: none;
+        }
+
+      }
+      .action{
+
+        width: 300px;
+      }
+      .index{
+        width: 50px;
+        padding-left: 20px;
+      }
+    }
+    .tableBody:nth-child(odd){
+      background: #F2F6F9;
+
+    }
+    .tableBody:nth-child(even){
+      background: #fff;
+
+    }
+  }
+}
+
+
+.Client{
+  padding: 20px 20px;
+  .attendenceCard{
+    border: 2px solid #404040;
+
+    border-radius: 10px;
+    margin-top: 30px;
+    padding: 10px;
+  }
+}

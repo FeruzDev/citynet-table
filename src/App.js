@@ -14,6 +14,8 @@ import Positions from "./page/Positions";
 import Attendance from "./page/Attendance";
 import Client from "./page/Client";
 import TopNavbar from "./component/TopNavbar";
+import Table from "./page/Table";
+import DatePicker from "./page/DataPicker";
 
 function App() {
   return (
@@ -32,6 +34,8 @@ function App() {
                 <PrivateRoute exact path='/positions' component={Positions} />
                 <PrivateRoute exact path='/attendance' component={Attendance} />
                 <PrivateRoute exact path='/client' component={Client} />
+                <PrivateRoute exact path='/tabel' component={Table} />
+                <PrivateRoute exact path='/datepicker' component={DatePicker} />
 
                 <PrivateRoute exact path='/tabelrep' component={TableRep} />
 

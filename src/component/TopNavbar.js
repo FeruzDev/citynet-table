@@ -7,7 +7,7 @@ const TopNavbar = () => {
             <Link to='/home' className="navbar-brand"  ><img src="/img/clogo.png" alt=""/></Link>
 
 
-                <a className="nav-link d-flex justify-content-center align-items-center"   > Выйти</a>
+                <Link className="nav-link d-flex justify-content-center align-items-center" to='/' onclick={() => localStorage.clear()} > Выйти</Link>
 
         </div>
     );

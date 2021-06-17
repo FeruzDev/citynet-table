@@ -2,15 +2,12 @@ import {UPDATE_STATE} from "../actionTypes/objectsActionType";
 
 const initialState ={
 
-    positionList: [],
-    modalOpenPosition: false,
-    userValuePositionState : {},
-    deleteOpenModal: false,
-    editOpenModal: false,
+    tableList: [],
+
 
 
 }
-export const positionReducer = (state= initialState, action) => {
+export const tableReducer = (state= initialState, action) => {
     switch (action.type){
         case UPDATE_STATE:
             return {...state, ...action.payload}

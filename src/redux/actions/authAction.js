@@ -25,7 +25,7 @@ export function loginUser(data, history) {
                    localStorage.setItem(TOKEN_NAME, res.data.access);
                    dispatch({type: LOGIN});
                    history.push("/home");
-                   window.location.reload(true);
+                   // window.location.reload(true);
                    console.log(res)
                }
 

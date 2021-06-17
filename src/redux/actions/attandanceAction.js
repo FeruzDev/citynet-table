@@ -63,18 +63,40 @@ export function reasonList(){
 
 
 
-export function addAttandance(data) {
+export function addAttandance(data, history) {
 
     return function (dispatch) {
 
         console.log(data)
         axios.post(API_PATH + "attendance/v1/attendance-list-create/", data, {headers: {Authorization: "Bearer " + localStorage.getItem(TOKEN_NAME)}})
             .then(res => {
-                console.log(res)
-                if (res.status === 201) {
+                if (res.status === 200) {
                     toast.success("Успешно добавлен")
                     // dispatch(getObjects());
+                    dispatch(getAttendanceList());
+                    history.push("/home");
 
+                } else {
+                    toast.error(res.message);
+                }
+            })
+
+    }
+
+
+}
+
+export function addReasonAttandance(data) {
+
+    return function (dispatch) {
+
+        console.log(data)
+        axios.post(API_PATH + "attendance/v1/attendance-list-create/", data, {headers: {Authorization: "Bearer " + localStorage.getItem(TOKEN_NAME)}})
+            .then(res => {
+                if (res.status === 200) {
+                    toast.success("Успешно добавлен")
+                    // dispatch(getObjects());
+                    dispatch(getAttendanceList());
 
                 } else {
                     toast.error(res.message);

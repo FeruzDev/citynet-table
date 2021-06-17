@@ -7,6 +7,7 @@ import {usersReducer} from "./usersReducer";
 import {AllWorkerReducer} from "./AllWorkerReducer";
 import {positionReducer} from "./positionReducer";
 import {attendanceReducer} from "./attendanceReducer";
+import {tableReducer} from "./tableReducer";
 
 export const rootReducer = combineReducers({
     login: loginReducer,
@@ -22,4 +23,7 @@ export const rootReducer = combineReducers({
     positionList: positionReducer,
 
     attendanceList: attendanceReducer,
+
+    tableList: tableReducer,
+
 });

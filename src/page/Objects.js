@@ -146,11 +146,6 @@ const Objects = (props) => {
 
             })
 
-
-
-
-
-
     }
 
 
@@ -250,9 +245,9 @@ const Objects = (props) => {
 
         <div>
             <button className="btn  addObject" onClick={changeModal}><img src="/img/icon/add.png" alt=""/>Добавить новый объект</button>
-            <button className="btn activeObject ml-3" onClick={() => props.updateState({objectsInActive: !props.objectsInActive})} ><img src="/img/icon/greenDot.png" alt=""/>Активный</button>
+            <button className={"btn activeObject ml-3"} onClick={() => props.updateState({objectsInActive: false})} ><span></span>Активный</button>
 
-            <button className="btn removeObject ml-3" onClick={() => props.updateState({objectsInActive: !props.objectsInActive})} ><img src="/img/icon/redDot.png" alt=""/>Уволенные</button>
+            <button className="btn removeObject ml-3" onClick={() => props.updateState({objectsInActive: true})} > <span></span>Уволенные</button>
 
         </div>
             </div>

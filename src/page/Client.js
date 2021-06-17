@@ -1,6 +1,12 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {connect} from "react-redux";
-import {getAttendanceList, hoursLits, reasonList, addAttandance} from "../redux/actions/attandanceAction";
+import {
+    getAttendanceList,
+    hoursLits,
+    reasonList,
+    addAttandance,
+    addReasonAttandance
+} from "../redux/actions/attandanceAction";
 import {getObjects} from "../redux/actions/objectsAction";
 import {Select} from "antd";
 import { AvForm, AvField , AvCheckbox, AvCheckboxGroup} from 'availity-reactstrap-validation';
@@ -11,26 +17,61 @@ const Client = (props) => {
     const {Option} = Select;
 
     useEffect(() => {
-        props.getAttendanceList()
         props.hoursLits()
         props.getObjects()
         props.reasonList()
-
-
-
-
+        props.getAttendanceList()
 
     }, [])
 
+    const [reasonT, setReason] = useState('')
 
-    const saveAttandance = (event, values) => {
-        props.addAttandance({...values});
+    const saveAttandance = (e, values) => {
 
-        console.log(values)
+        let arr = [];
+        for (let i = 0; i < props.attendanceWorkerList.length; i++) {
+            if (values.worker[i] > 0){
+                arr.push({
+                    worker: values.worker[i][0],
+                    construction: values.construction[i],
+                    working_hours: values.working_hours[i],
+                    reason: values.reason[i],
+                    context: values.context[i],
+                })
+            }
+        }
+        props.addAttandance(arr, props.history);
+
+        props.getAttendanceList()
 
     }
 
 
+
+
+    const saveAttandanceReason = (e, values) => {
+        let arr = [];
+        for (let i = 0; i < props.attendanceWorkerList.length; i++) {
+            if (values.worker[i] > 0){
+                arr.push({
+                    worker: values.worker[i][0],
+                    reason: values.reason[i],
+                    context: values.context[i],
+                })
+            }
+        }
+        props.addReasonAttandance(arr);
+
+        arr= null
+        props.getAttendanceList()
+    }
+
+
+
+
+    const reasonEvent = (e) =>{
+        setReason(e)
+    }
 
     return (
         <div className = "Client">
@@ -38,52 +79,99 @@ const Client = (props) => {
 
             <h4 className='mt-3'>Выберите рабочих которые сегодня работали:</h4>
 
-            <AvForm onInvalidSubmit={saveAttandance} >
 
-            {
-                props.attendanceWorkerList?.map((item, i) => (
-                    <div className="attendenceCard" >
+                <AvForm onValidSubmit={   saveAttandance} >
+                    <div className="">
 
-
-                        <AvCheckboxGroup name="worker"  >
-                            <AvCheckbox value={item.id} />
-                        </AvCheckboxGroup>
-
-                        <h5>{item.first_name}  {item.last_name}  {item.middle_name} </h5>
- 
-
-                        <h6>Выберите объект:</h6>
-                        <Select name={'construction' + [i] }  style={{width: '200px'}}  >
-                            { props.objectsList.map(item2 => (
-                                <Option value={item2.name}>{item2.name}  </Option>
-                            ))}
-                        </Select>
-                        <h6>Выберите сколько часов работал:</h6>
-
-                        <Select name={'working_hours' + [i] }  style={{width: '80px'}}  >
-                            { props.workingHourList.map(item2 => (
-                                <Option value={item2.hour}>{item2.hour} ч</Option>
-                            ))}
-                        </Select>
-
-                        <h6>Причина</h6>
-
-                        <Select name={'reason' + [i] }  style={{width: '150px'}}  >
-                            { props.reasonAllList.map(item3 => (
-                                <Option value={item3.reason}>{item3.reason} </Option>
-                            ))}
-                        </Select>
-
-                </div>
+                    {
+                        props.attendanceWorkerList?.map((item, i) => (
 
 
+                                <div className="attendenceCard">
 
-                ))
-            }
 
-                <button   className='btn addObject mt-4 btn-primary' onClick={saveAttandance}>Сохранить</button>
+                                    <div className="row pl-3 w-25">
 
-            </AvForm>
+                                        <AvCheckboxGroup name={'worker[' + i + ']'}  >
+                                            <AvCheckbox value={item.id} />
+                                        </AvCheckboxGroup>
+
+                                        <h5>{item.first_name}  {item.last_name}  {item.middle_name} </h5>
+
+                                    </div>
+
+
+                                    {
+                                        reasonT === i ? '' :
+                                            <>
+
+                                                <div>
+                                                    <h6>Выберите объект:</h6>
+                                                    <AvField type='select'  name={'construction[' + i + ']'}  style={{width: '200px'}}  >
+                                                        <option></option>
+                                                        { props.objectsList.map((item2, i) => (
+                                                            <option key={i} value={item2.id}>{item2.name}  </option>
+                                                        ))}
+                                                    </AvField>
+
+                                                </div>
+
+
+                                                <div>
+                                                    <h6>Выберите сколько часов работал:</h6>
+
+                                                    <AvField type='select' name={'working_hours[' + i  + ']'}  style={{width: '80px'}}  >
+
+                                                        <option></option>
+                                                        { props.workingHourList.map((item2, i) => (
+                                                            <option key={i} value={item2.hour}>{item2.hour} ч</option>
+                                                        ))}
+                                                    </AvField>
+
+                                                </div>
+                                            </>
+                                    }
+
+
+
+
+                                    <div>
+                                        <h6>Причина</h6>
+
+                                       <div className='d-flex'>
+                                           <AvField type='select' onChange={() => reasonEvent(i)} className='mr-5' name={'reason[' + i + ']'}  style={{width: '150px'}}  >
+                                               <option ></option>
+                                               { props.reasonAllList.map(item3 => (
+                                                   <option value={item3.id}>{item3.reason} </option>
+                                               ))}
+                                           </AvField>
+
+                                           {
+                                               (
+                                                   reasonT === i
+                                                       ?
+                                                       <AvField type='textarea ' name={'context[' + i + ']'} style={{height: "70px"}} />
+
+                                                       :
+                                                       ''
+                                               )
+                                           }
+                                       </div>
+                                    </div>
+
+
+                                </div>
+
+
+
+
+                        ))
+                    }
+                    </div>
+
+                    <button   className='btn addObject mt-4 btn-primary' type='submit'>Сохранить</button>
+
+                </AvForm>
 
         </div>
     );
@@ -101,4 +189,4 @@ const mapStateToProps = (state) => {
 }
 
 
-export default connect(mapStateToProps, {getAttendanceList, getObjects, reasonList, hoursLits, addAttandance})(Client);
+export default connect(mapStateToProps, {getAttendanceList, getObjects, reasonList, hoursLits, addReasonAttandance, addAttandance})(Client);

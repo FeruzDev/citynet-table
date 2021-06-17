@@ -209,6 +209,7 @@ const Users = (props) => {
 
                 props.updateState({returnOpenModal: !props.returnOpenModal})
 
+                props.getUsersInActive()
 
             })
 
@@ -377,7 +378,7 @@ const Users = (props) => {
 
 
 
-    const [header_worker,setHeader_worker] = useState('')
+    // const [header_worker,setHeader_worker] = useState('')
 
     const [selectedRowKeys, setselectedRowKeys] = useState([])
 
@@ -429,9 +430,9 @@ const Users = (props) => {
                 <div>
 
                     <button className="btn addObject" onClick={changeModal}><img src="/img/icon/add.png" alt=""/>Добавить новый пользовател</button>
-                    <button className="btn activeObject ml-3" onClick={() => props.updateState({usersInActive: !props.usersInActive})} ><img src="/img/icon/greenDot.png" alt=""/>Активный</button>
+                    <button className="btn activeObject ml-3" onClick={() => props.updateState({usersInActive: false})} ><span></span>Активный</button>
 
-                    <button className="btn removeObject ml-3" onClick={() => props.updateState({usersInActive: !props.usersInActive})} ><img src="/img/icon/redDot.png" alt=""/>Уволенные</button>
+                    <button className="btn removeObject ml-3" onClick={() => props.updateState({usersInActive: true})} ><span></span>Уволенные</button>
 
                 </div>
             </div>

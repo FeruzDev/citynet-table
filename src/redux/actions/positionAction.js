@@ -3,6 +3,8 @@ import {API_PATH, TOKEN_NAME} from "../../tools/constants";
 import {UPDATE_STATE} from "../actionTypes/objectsActionType";
 import {toast} from "react-toastify";
 import {getUsers} from "./usersAction";
+import {useState} from "react";
+
 export function updateState (data){
     return {
         type: UPDATE_STATE,
@@ -36,7 +38,7 @@ export function addPositions(data) {
 
     return function (dispatch) {
 
-        axios.post(API_PATH + "account/v1/account-register/", data ,{headers: {Authorization: "Bearer " + localStorage.getItem(TOKEN_NAME)}})
+        axios.post(API_PATH + "position/v1/position-create/", data ,{headers: {Authorization: "Bearer " + localStorage.getItem(TOKEN_NAME)}})
             .then(res =>{
 
 
@@ -44,7 +46,7 @@ export function addPositions(data) {
 
                 toast.success("Успешно добавлен")
                 dispatch(getPosition());
-                dispatch(updateState({modalOpen: false}));
+                dispatch(updateState({modalOpenPosition: false}));
 
 
 
@@ -57,6 +59,4 @@ export function addPositions(data) {
     }
 
 }
-
-
 

@@ -122,6 +122,9 @@ body{
 
 .formAddButton{
 
+  &:hover{
+    color: #fff;
+  }
   background: #1F7BBF;
 
   color: #fff;
@@ -225,16 +228,42 @@ body{
       }
     }
     .activeObject{
+
+
       border: 2px solid #45B76A;
       border-radius: 25px;
 
       color: #45B76A;
 
       width: 180px;
-      img{
+
+
+      &:focus{
+        background-color: #45B76A;
+        color: #fff;
+        box-shadow: none;
+
+        span{
+          width: 8px;
+          height: 8px;
+          display: inline-block;
+          border-radius: 50%;
+          border: 1px solid #fff;
+
+          margin-right: 10px;
+          background-color: #45B76A;
+        }
+      }
+      span{
         width: 8px;
-        margin-top: -2px;
+        height: 8px;
+        display: inline-block;
+        border-radius: 50%;
+        border: 1px solid #45B76A;
+
+
         margin-right: 10px;
+        background-color: #45B76A;
       }
     }
     .removeObject{
@@ -244,10 +273,33 @@ body{
       color: #FF551C;
 
       width: 180px;
-      img{
+
+      &:focus{
+        background-color: #FF551C;
+        color: #fff;
+
+        box-shadow: none;
+        span{
+          width: 8px;
+          height: 8px;
+          display: inline-block;
+          border-radius: 50%;
+          border: 1px solid #fff;
+
+          margin-right: 10px;
+          background-color: #FF551C;
+        }
+      }
+      span{
         width: 8px;
-        margin-top: -2px;
+        height: 8px;
+        display: inline-block;
+        border-radius: 50%;
+        border: 1px solid #FF551C;
+
+
         margin-right: 10px;
+        background-color: #FF551C;
       }
     }
   }
@@ -349,9 +401,50 @@ body{
   padding: 20px 20px;
   .attendenceCard{
     border: 2px solid #404040;
+    display: flex;
 
-    border-radius: 10px;
-    margin-top: 30px;
+    align-items: center;
+    justify-content: space-between;
+    border-radius: 5px;
     padding: 10px;
+    margin-top: 10px;
+    flex-wrap: wrap;
+
+    h6{
+      font-size: 14px;
+    }
+    .form-group{
+      margin-bottom: 10px;
+      select{
+        padding: 2px;
+        height: auto;
+      }
+    }
+  }
+}
+
+
+.Table{
+  padding: 20px;
+  .tableList{
+    width: 100%;
+    border: 1px solid  gray;
+
+    tr{
+
+      th{
+        background-color: rgba(31, 123, 191, 0.66);
+        border: 1px solid  gray;
+        color: #fff;
+        padding: 5px 10px;
+        font-weight: 500;
+      }
+      td{
+        border: 1px solid gray;
+        padding: 5px 10px;
+
+
+      }
+    }
   }
 }

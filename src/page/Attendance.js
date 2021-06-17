@@ -6,6 +6,7 @@ import {Button, Select, Table,} from "antd";
 import {PlusOutlined} from "@ant-design/icons";
 import axios from "axios";
 import {API_PATH, TOKEN_NAME} from "../tools/constants";
+import {getObjects} from "../redux/actions/objectsAction";
 
 const Attendance = (props) => {
     const {Option} = Select;
@@ -24,7 +25,22 @@ const Attendance = (props) => {
         },
         {
             title: 'Oбъект',
-            dataIndex: 'construction_name'
+            dataIndex: '',
+            render: (action, record: { id: number }) => {
+                return (
+                    <>
+
+
+
+                        <Select name="working_hours" onChange={postFormCon} style={{width: '150px'}}>
+                            <Option></Option>
+                            {props.objectsList.map(item => (
+                                <Option value={item.id}>{item.name}</Option>
+                            ))}
+                        </Select>
+                    </>
+                )
+            }
         },
         {
             title: 'Должность',
@@ -41,6 +57,7 @@ const Attendance = (props) => {
                         {/*<button type="primary" onClick={onEdit(record.id:number)}>edit</button>*/}
 
                         <Select name="working_hours" onChange={postForm} style={{width: '80px'}}>
+                            <Option></Option>
                             {props.workingHourList.map(item => (
                                 <Option value={item.hour}>{item.hour} ч</Option>
                             ))}
@@ -63,8 +80,7 @@ const Attendance = (props) => {
 
                         <Button className="border-0  pl-1 pr-1 text-secondary" ReactNode icon={<PlusOutlined
                             style={{fontSize: '24px', color: "#fff", backgroundColor: "#1F7BBF"}}/>}
-                                onClick={(): void => onEdit(record)}/>
-
+                                onClick={() => onEdit(record)}/>
                     </>
                 )
             }
@@ -74,17 +90,22 @@ const Attendance = (props) => {
 
 
     const [hourSelect, sethourSelect] = useState('')
+    const [constructionSelect, setconstructionSelect] = useState('')
 
     const postForm = (value) => {
         sethourSelect(value);
     }
 
+    const postFormCon = (value) => {
+        setconstructionSelect(value);
+    }
     const onEdit = (record) => {
 
         let data = new FormData();
 
         data.append("working_hours", hourSelect)
         data.append("worker", record.id)
+        data.append("construction", constructionSelect)
 
 
         console.log('Edit record number', record)
@@ -96,6 +117,8 @@ const Attendance = (props) => {
 
 
                 console.log(res)
+                props.getAttendanceList();
+
             })
 
 
@@ -105,6 +128,8 @@ const Attendance = (props) => {
     useEffect(() => {
         props.getAttendanceList()
         props.hoursLits()
+        props.getObjects()
+
 
     }, [])
     return (
@@ -122,10 +147,11 @@ const Attendance = (props) => {
 const mapStateToProps = (state) => {
     return {
         attendanceWorkerList: state.attendanceList.attendanceWorkerList,
+        objectsList: state.objectsList.objectsList,
         workingHourList: state.attendanceList.workingHourList
 
     }
 }
 
 
-export default connect(mapStateToProps, {getAttendanceList, hoursLits})(Attendance);
+export default connect(mapStateToProps, {getAttendanceList, hoursLits, getObjects})(Attendance);

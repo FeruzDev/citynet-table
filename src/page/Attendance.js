@@ -7,6 +7,7 @@ import {PlusOutlined} from "@ant-design/icons";
 import axios from "axios";
 import {API_PATH, TOKEN_NAME} from "../tools/constants";
 import {getObjects} from "../redux/actions/objectsAction";
+import {toast, ToastContainer} from "react-toastify";
 
 const Attendance = (props) => {
     const {Option} = Select;
@@ -80,7 +81,7 @@ const Attendance = (props) => {
 
                         <Button className="border-0  pl-1 pr-1 text-secondary" ReactNode icon={<PlusOutlined
                             style={{fontSize: '24px', color: "#fff", backgroundColor: "#1F7BBF"}}/>}
-                                onClick={() => onEdit(record)}/>
+                                onClick={() => saveData(record)}/>
                     </>
                 )
             }
@@ -99,23 +100,32 @@ const Attendance = (props) => {
     const postFormCon = (value) => {
         setconstructionSelect(value);
     }
-    const onEdit = (record) => {
+    const saveData = (record) => {
 
-        let data = new FormData();
+        // let data = new FormData();
+        //
+        // data.append("working_hours", hourSelect)
+        // data.append("worker", record.id)
+        // data.append("construction", constructionSelect)
 
-        data.append("working_hours", hourSelect)
-        data.append("worker", record.id)
-        data.append("construction", constructionSelect)
+        let arr =[];
 
+        arr.push({
+            worker: record.id,
+            construction: constructionSelect,
+            working_hours: hourSelect,
+
+        })
 
         console.log('Edit record number', record)
 
-        console.log(data)
+        console.log(arr)
 
-        axios.post(API_PATH + "attendance/v1/attendance-list-create/" , data, {headers: {Authorization: "Bearer " + localStorage.getItem(TOKEN_NAME)}})
+        axios.post(API_PATH + "attendance/v1/attendance-list-create/" , arr, {headers: {Authorization: "Bearer " + localStorage.getItem(TOKEN_NAME)}})
             .then(res => {
 
 
+                toast.success("Успешно добавлен")
                 console.log(res)
                 props.getAttendanceList();
 
@@ -140,6 +150,7 @@ const Attendance = (props) => {
             </div>
             <Table columns={columns} dataSource={props.attendanceWorkerList} size="middle"/>
 
+            <ToastContainer />
         </div>
     );
 };

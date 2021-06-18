@@ -3,10 +3,13 @@ import {UPDATE_STATE} from "../actionTypes/objectsActionType";
 const initialState ={
 
     positionList: [],
+    positionInActiveList: [],
     modalOpenPosition: false,
+    returnOpenModal: false,
     userValuePositionState : {},
     deleteOpenModal: false,
     editOpenModal: false,
+    positionInActive: false,
 
 
 }

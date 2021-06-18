@@ -1,8 +1,13 @@
 import React, {useEffect, useState} from 'react';
 import {connect} from "react-redux";
-import {addPositions, updateState, getPosition} from "../redux/actions/positionAction";
+import {
+    addPositions,
+    updateState,
+    getPosition,
+    getInActivePosition
+} from "../redux/actions/positionAction";
 import {Button, Table} from "antd";
-import {CloseOutlined, EditFilled, MinusCircleOutlined} from "@ant-design/icons";
+import {CloseOutlined, EditFilled, MinusCircleOutlined, UndoOutlined} from "@ant-design/icons";
 import {Modal, ModalBody, ModalFooter} from "reactstrap";
 import {AvField, AvForm} from "availity-reactstrap-validation";
 import {ToastContainer} from "react-toastify";
@@ -32,6 +37,7 @@ const Positions = (props) => {
             title: 'Действие',
             dataIndex: '',
             key: 'action',
+
             render: (action, record: {id: number}) => {
                 return (
                     <>
@@ -50,8 +56,39 @@ const Positions = (props) => {
         },
     ];
 
+
+
+    const columnsForRemove = [
+        {
+            title: 'Название  ',
+            dataIndex: 'name',
+        },
+
+        {
+            title: 'Действие',
+            dataIndex: '',
+            key: 'action',
+            render: (action, record: {id: number}) => {
+                return (
+                    <>
+
+                        {/*<button type="primary" onClick={onEdit(record.id:number)}>edit</button>*/}
+
+
+                        <Button className="border-0  pl-1 pr-1 text-secondary" ReactNode icon={<FormOutlined style={{ fontSize: '24px'  }}/>} onClick={()  => onEdit(record.id)} />
+
+
+                        <Button className="border-0 ml-3  pl-1 pr-1 text-success" ReactNode icon={<UndoOutlined style={{ fontSize: '24px'   }}/>}  onClick={ () =>  onReturn(record.id)} />
+                    </>
+                )
+            }
+        },
+
+    ];
+
     useEffect(()=>{
         props.getPosition()
+        props.getInActivePosition()
     }, [])
 
 
@@ -127,20 +164,33 @@ const Positions = (props) => {
 
                 props.updateState({deleteOpenModal: !props.deleteOpenModal})
                 props.getPosition()
+                props.getInActivePosition()
 
             })
+
+    }
+
+    const onReturn = (id) => {
+
+        console.log('Remove record number', id)
+
+
+        props.updateState({returnOpenModal: !props.returnOpenModal})
+
+        setRemovePosition(id)
+
 
     }
     const onReturnActive = (id) => {
 
         console.log('Remove record number', id)
 
-        axios.put(API_PATH + "construction/v1/construction-activate/" + removePosition + "/", '',{headers: {Authorization: "Bearer " + localStorage.getItem(TOKEN_NAME)}})
+        axios.put(API_PATH + "position/v1/position-activate/" + removePosition + "/", '',{headers: {Authorization: "Bearer " + localStorage.getItem(TOKEN_NAME)}})
             .then(res => {
 
 
                 props.updateState({returnOpenModal: !props.returnOpenModal})
-                props.getInActiveObjects()
+                props.getInActivePosition()
 
             })
 
@@ -182,15 +232,23 @@ const Positions = (props) => {
 
     return (
         <div className="Objects">
+
+
+
             <div className="objectHeader">
                 <h2>Список должность</h2>
 
                 <div>
 
-                    <button className="btn addObject" onClick={changeModal}  ><img src="/img/icon/addIcon.png" alt=""/>Добавить новый должность</button>
+                    <button className="btn addObject" onClick={changeModal}  ><img src="/img/icon/add.png" alt=""/>Добавить новый должность</button>
+
+                    <button className={"btn activeObject ml-3"} onClick={() => props.updateState({positionInActive: false})} ><span></span>Активный</button>
+
+                    <button className="btn removeObject ml-3" onClick={() => props.updateState({positionInActive: true})} > <span></span>Уволенные</button>
 
                 </div>
             </div>
+
 
 
 
@@ -278,7 +336,7 @@ const Positions = (props) => {
                 </ModalBody>
                 <ModalFooter>
                     <button type='button' className="btn btn-success" onClick={  onReturnActive }>Да</button>
-                    <button type='button' className="btn btn-secondary" onClick={() => {props.updateState({selectedIdForDelete: null}); changeDeleteModal()}}>Нет</button>
+                    <button type='button' className="btn btn-secondary" onClick={() => {props.updateState({selectedIdForDelete: null}); changeReturnModal()}}>Нет</button>
                 </ModalFooter>
             </Modal>
 
@@ -287,7 +345,15 @@ const Positions = (props) => {
 
             <ToastContainer/>
 
-            <Table  columns={columns} dataSource={props.positionList}  size="small" />
+            {
+                props.positionInActive ?
+                    <Table columns={columnsForRemove} dataSource={props.positionInActiveList} size="small"  />
+                    :
+                    <Table columns={columns} dataSource={props.positionList} size="small"  />
+
+            }
+
+
         </div>
     );
 };
@@ -297,8 +363,11 @@ const mapStateToProps = (state) => {
     return {
         positionList: state.positionList.positionList,
         modalOpenPosition: state.positionList.modalOpenPosition,
+        returnOpenModal: state.positionList.returnOpenModal,
         deleteOpenModal: state.positionList.deleteOpenModal,
         editOpenModal: state.positionList.editOpenModal,
+        positionInActive: state.positionList.positionInActive,
+        positionInActiveList: state.positionList.positionInActiveList,
 
 
     }
@@ -306,4 +375,4 @@ const mapStateToProps = (state) => {
 
 
 
-export default connect(mapStateToProps,{getPosition,updateState, addPositions })(Positions);
+export default connect(mapStateToProps,{getPosition,updateState, addPositions, getInActivePosition })(Positions);

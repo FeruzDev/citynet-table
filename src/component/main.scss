@@ -11,7 +11,24 @@ body{
   }
 }
 
+table{
+  thead{
+    tr{
+      th:last-child{
+        text-align: end;
+      }
+    }
 
+  }
+    tbody{
+      tr{
+        td:last-child{
+          text-align: end;
+
+        }
+      }
+  }
+}
 
 
 
@@ -376,6 +393,8 @@ body{
         }
 
       }
+
+
       .action{
 
         width: 300px;
@@ -432,6 +451,7 @@ body{
 
     tr{
 
+
       th{
         background-color: rgba(31, 123, 191, 0.66);
         border: 1px solid  gray;
@@ -445,6 +465,7 @@ body{
 
 
       }
+
     }
   }
 }

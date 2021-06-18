@@ -219,6 +219,11 @@ const Users = (props) => {
 
 
     }
+    const savePhoto = (e) => {
+        console.log(e.target.files[0])
+       props.saveFile(e.target.files[0]);
+    }
+
 
 
     const [checked, setChecked] = useState(false)
@@ -571,13 +576,13 @@ const Users = (props) => {
 
 
                             <input
-                                name="image"
                                 type="file"
-
-                                label="Profile image "
-
+                                id="file"
+                                name="image"
                                 required
-                            />
+                                onChange={savePhoto}
+                                className="form-control"/>
+
 
                         </div>
                     </div>

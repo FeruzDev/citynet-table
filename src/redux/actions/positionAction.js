@@ -28,6 +28,18 @@ export function getPosition(){
     }
 }
 
+export function getInActivePosition(){
+    return function (dispatch) {
+        axios.get(API_PATH + "position/v1/position-inactive-list/", {headers: {Authorization: "Bearer " + localStorage.getItem(TOKEN_NAME)}})
+            .then(res => {
+                dispatch(updateState({positionInActiveList: res.data}));
+
+                console.log(res)
+
+            })
+    }
+}
+
 
 
 

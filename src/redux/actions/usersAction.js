@@ -116,6 +116,22 @@ export function getUsersValue(){
 
 
 
+export function saveFile(data){
+    return function (dispatch) {
+        let image = new FormData();
+        image.append("image", data);
+
+        axios.post(API_PATH + "account/v1/account-register/", image)
+            .then(res => {
+                console.log(res);
+                if (res.status === 200){
+                    dispatch(updateState({selectedImage: res.data.id}))
+                } else {
+                    toast.error("Xatolik!!!");
+                }
+            })
+    }
+}
 
 
 

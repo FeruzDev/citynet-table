@@ -1,8 +1,7 @@
 import axios from "axios";
 import {toast} from "react-toastify";
 import {LOGIN} from "../actionTypes/authType";
-import {TOKEN_NAME} from "../../tools/constants";
-
+import {TOKEN_NAME, TOKEN_NAME_ROLL} from "../../tools/constants";
 
 
 
@@ -23,10 +22,12 @@ export function loginUser(data, history) {
                    toast.success("Login yoki parol noto'g'ri");
                } else {
                    localStorage.setItem(TOKEN_NAME, res.data.access);
+                   localStorage.setItem(TOKEN_NAME_ROLL, res.data.roll);
                    dispatch({type: LOGIN});
                    history.push("/home");
                    // window.location.reload(true);
-                   console.log(res)
+                   window.location.reload();
+
                }
 
            })

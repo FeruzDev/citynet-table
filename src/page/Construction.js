@@ -6,7 +6,7 @@ import {
     addObjects,
     editObject,
     deleteObject,
-    getInActiveObjects,
+    getInActiveObjects, getConstruction, addConstruction, getInActiveConstruction,
 
 } from "../redux/actions/objectsAction"
 import { AvForm, AvField } from 'availity-reactstrap-validation';
@@ -22,7 +22,7 @@ import UndoOutlined from "@ant-design/icons/es/icons/UndoOutlined";
 import DownOutlined from "@ant-design/icons/es/icons/DownOutlined";
 
 
-const Objects = (props) => {
+const Construction = (props) => {
 
     const columns = [
         {
@@ -45,7 +45,7 @@ const Objects = (props) => {
 
 
 
-                       <Button className="border-0 ml-3  pl-1 pr-1 text-secondary" ReactNode icon={<DeleteOutlined style={{ fontSize: '24px'   }}/>}  onClick={(): void => onDelete(record.id)} />
+                        <Button className="border-0 ml-3  pl-1 pr-1 text-secondary" ReactNode icon={<DeleteOutlined style={{ fontSize: '24px'   }}/>}  onClick={(): void => onDelete(record.id)} />
                     </>
                 )
             }
@@ -93,11 +93,11 @@ const Objects = (props) => {
 
         console.log('Edit record number', id)
 
-        axios.get(API_PATH + "construction/v1/construction-retrieve-update/" + id + "/", {headers: {Authorization: "Bearer " + localStorage.getItem(TOKEN_NAME)}})
+        axios.get(API_PATH + "construction/v1/object-retrieve-update/" + id + "/", {headers: {Authorization: "Bearer " + localStorage.getItem(TOKEN_NAME)}})
             .then(res => {
                 setuserValueObjectState(res.data);
                 // props.updateState({modalOpenEditAgain: !props.modalOpenEditAgain})
-                props.updateState({editOpenModal: !props.editOpenModal})
+                props.updateState({editOpenModalConstruction: !props.editOpenModalConstruction})
 
                 console.log(res)
             })
@@ -116,9 +116,9 @@ const Objects = (props) => {
         console.log('Remove record number', id)
 
 
-                props.updateState({deleteOpenModal: !props.deleteOpenModal})
+        props.updateState({deleteOpenModal: !props.deleteOpenModal})
 
-                setRemoveObjects(id)
+        setRemoveObjects(id)
 
 
     }
@@ -141,28 +141,28 @@ const Objects = (props) => {
 
         console.log('Remove record number', id)
 
-        axios.put(API_PATH + "construction/v1/construction-inactivate/" + removeObjects + "/", '',{headers: {Authorization: "Bearer " + localStorage.getItem(TOKEN_NAME)}})
+        axios.put(API_PATH + "construction/v1/object-inactivate/" + removeObjects + "/", '',{headers: {Authorization: "Bearer " + localStorage.getItem(TOKEN_NAME)}})
             .then(res => {
 
 
                 props.updateState({deleteOpenModal: !props.deleteOpenModal})
-                props.getObjects()
+                props.getConstruction()
 
             })
 
     }
 
 
-   const onReturnActive = (id) => {
+    const onReturnActive = (id) => {
 
         console.log('Remove record number', id)
 
-        axios.put(API_PATH + "construction/v1/construction-activate/" + removeObjects + "/", '',{headers: {Authorization: "Bearer " + localStorage.getItem(TOKEN_NAME)}})
+        axios.put(API_PATH + "construction/v1/object-activate/" + removeObjects + "/", '',{headers: {Authorization: "Bearer " + localStorage.getItem(TOKEN_NAME)}})
             .then(res => {
 
 
                 props.updateState({returnOpenModal: !props.returnOpenModal})
-                props.getInActiveObjects()
+                props.getInActiveConstruction()
 
             })
 
@@ -176,13 +176,14 @@ const Objects = (props) => {
 
 
     useEffect(()=> {
-        props.getObjects()
-        props.getInActiveObjects()
+
+        props.getConstruction()
+        props.getInActiveConstruction()
     }, [])
 
 
     const changeModal = () => {
-        props.updateState({modalOpen: !props.modalOpen})
+        props.updateState({modalOpenConstruction: !props.modalOpenConstruction})
     }
 
     const changeDeleteModal = () => {
@@ -194,13 +195,13 @@ const Objects = (props) => {
     }
 
     const changeEditModal = () => {
-        props.updateState({editOpenModal: !props.editOpenModal})
+        props.updateState({editOpenModalConstruction: !props.editOpenModalConstruction})
     }
 
 
 
     const saveObjects = (event, values) => {
-      props.addObjects({...values});
+        props.addConstruction({...values});
     }
 
 
@@ -212,10 +213,10 @@ const Objects = (props) => {
         let data2 = new FormData();
         data2.append("name", event.target.name.value)
         data2.append("description", event.target.description.value)
-        axios.put(API_PATH + "construction/v1/construction-retrieve-update/" + userValueObjectState.id + "/", data2 , {headers: {Authorization: "Bearer " + localStorage.getItem(TOKEN_NAME)}})
+        axios.put(API_PATH + "construction/v1/object-retrieve-update/" + userValueObjectState.id + "/", data2 , {headers: {Authorization: "Bearer " + localStorage.getItem(TOKEN_NAME)}})
             .then(res => {
-                console.log(res)
-                props.getObjects()
+
+                props.getConstruction()
 
             })
 
@@ -232,7 +233,7 @@ const Objects = (props) => {
 
 
     const deleteItem = (data) => {
-       props.updateState({selectedIdForDelete: data.id});
+        props.updateState({selectedIdForDelete: data.id});
 
     }
 
@@ -248,25 +249,25 @@ const Objects = (props) => {
             <div className="objectHeader">
                 <h2>Список объектов</h2>
 
-        <div>
-            <button className="btn  addObject" onClick={changeModal}><img src="/img/icon/add.png" alt=""/>Добавить новый объект</button>
+                <div>
+                    <button className="btn  addObject" onClick={changeModal}><img src="/img/icon/add.png" alt=""/>Добавить новый объект</button>
 
 
 
 
-            <button className={"btn activeObject ml-3"} onClick={() => props.updateState({objectsInActive: false})} ><span></span>Активный</button>
+                    <button className={"btn activeObject ml-3"} onClick={() => props.updateState({objectsInActive: false})} ><span></span>Активный</button>
 
-            <button className="btn removeObject ml-3" onClick={() => props.updateState({objectsInActive: true})} > <span></span>Уволенные</button>
+                    <button className="btn removeObject ml-3" onClick={() => props.updateState({objectsInActive: true})} > <span></span>Уволенные</button>
 
-        </div>
+                </div>
             </div>
 
 
             {
                 props.objectsInActive ?
-                    <Table columns={columnsForRemove} dataSource={props.objectsInActiveList} size="small"  />
+                    <Table columns={columnsForRemove} dataSource={props.constructionInActiveList} size="small"  />
                     :
-                    <Table columns={columns} dataSource={props.objectsList} size="small"  />
+                    <Table columns={columns} dataSource={props.constructionList} size="small"  />
 
             }
 
@@ -276,47 +277,47 @@ const Objects = (props) => {
 
             {/*FOR ADD*/}
             <Modal
-                isOpen={props.modalOpen}
+                isOpen={props.modalOpenConstruction}
                 className="objectModal"
                 contentLabel="Example Modal"
             >
                 {/*<button onClick={changeModal} className="btn  mdi_close"><img src="/img/icon/mdi_close.png" alt=""/></button>*/}
 
                 <ModalBody>
-                  <div className="addObjectModal">
+                    <div className="addObjectModal">
 
-                      <h4 className="mb-4">Добавить новый объект</h4>
-                      <AvForm onValidSubmit={saveObjects}
-                      >
+                        <h4 className="mb-4">Добавить новый объект</h4>
+                        <AvForm onValidSubmit={saveObjects}
+                        >
 
 
-                          <AvField
-                              name="name"
-                              type="text"
-                              label="Введите название"
-                              required
-                          />
+                            <AvField
+                                name="name"
+                                type="text"
+                                label="Введите название"
+                                required
+                            />
 
-                          <AvField
-                              name="description"
-                              type="textarea"
-                              label="Oписание"
-                              required
-                              style={{height: '165px'}}
-                          />
+                            <AvField
+                                name="description"
+                                type="textarea"
+                                label="Oписание"
+                                required
+                                style={{height: '165px'}}
+                            />
 
-                          <button className="btn formAddButton  "  >Добавить</button>
-                          <button className="btn  formCancel   " onClick={changeModal}  >Отмена</button>
-                      </AvForm>
-                  </div>
-               </ModalBody>
+                            <button className="btn formAddButton  "  >Добавить</button>
+                            <button className="btn  formCancel   " onClick={changeModal}  >Отмена</button>
+                        </AvForm>
+                    </div>
+                </ModalBody>
             </Modal>
 
 
             {/*FOR EDIT*/}
 
             <Modal
-                isOpen={props.editOpenModal}
+                isOpen={props.editOpenModalConstruction}
                 className="objectModal"
                 contentLabel="Example Modal"
 
@@ -354,7 +355,7 @@ const Objects = (props) => {
             {/*FOR DELETE*/}
 
             <Modal
-            isOpen={props.deleteOpenModal} toggle={() =>changeDeleteModal}>
+                isOpen={props.deleteOpenModal} toggle={() =>changeDeleteModal}>
                 <ModalBody>
                     <h5>Вы действительно хотите удалить это?</h5>
                 </ModalBody>
@@ -386,14 +387,17 @@ const Objects = (props) => {
 const mapStateToProps = (state) => {
     return {
         modalOpen: state.objectsList.modalOpen,
+        modalOpenConstruction: state.objectsList.modalOpenConstruction,
         deleteOpenModal: state.objectsList.deleteOpenModal,
         returnOpenModal: state.objectsList.returnOpenModal,
-        editOpenModal: state.objectsList.editOpenModal,
+        editOpenModalConstruction: state.objectsList.editOpenModalConstruction,
         objectsInActive: state.objectsList.objectsInActive,
+        constructionInActiveList: state.objectsList.constructionInActiveList,
 
         selectedImage: state.objectsList.selectedImage,
 
         objectsList: state.objectsList.objectsList,
+        constructionList: state.objectsList.constructionList,
         objectsInActiveList: state.objectsList.objectsInActiveList,
         selectedIdForDelete: state.objectsList.selectedIdForDelete,
         selectedIdForEdit: state.objectsList.selectedIdForEdit,
@@ -401,4 +405,4 @@ const mapStateToProps = (state) => {
         selectedObject: state.objectsList.selectedObject,
     }
 }
-export default connect(mapStateToProps,{getObjects,  editObject,getInActiveObjects, updateState,deleteObject, addObjects})(Objects);
+export default connect(mapStateToProps,{getConstruction,  editObject,getInActiveConstruction, updateState,deleteObject, addConstruction})(Construction);

@@ -162,6 +162,8 @@ class AllWorker extends  Component {
             }
         ];
         return <div className="Objects">
+
+
             <div className="objectHeader">
                 <h2>Список всех рабочих</h2>
 

@@ -1,16 +1,40 @@
 import React, {useEffect, useState} from 'react';
 import {connect} from "react-redux";
 import {getAllUsers} from "../redux/actions/AllWorkerAction";
-import {getAttendanceList, hoursLits} from "../redux/actions/attandanceAction";
+import {getAttendanceList, hoursLits, reasonList} from "../redux/actions/attandanceAction";
 import {Button, Select, Table,} from "antd";
 import {PlusOutlined} from "@ant-design/icons";
 import axios from "axios";
 import {API_PATH, TOKEN_NAME} from "../tools/constants";
 import {getObjects} from "../redux/actions/objectsAction";
 import {toast, ToastContainer} from "react-toastify";
+import {AvField} from "availity-reactstrap-validation";
+
+
+
 
 const Attendance = (props) => {
     const {Option} = Select;
+
+    const [reasonT, setReason] = useState('')
+    const reasonEvent = (value) =>{
+        setReason(value)
+
+
+    }
+
+    const [reasonCon, setreasonContext] = useState('')
+
+
+    const reasonContext = (e) =>{
+        setreasonContext(e)
+
+
+
+    }
+
+
+
     const columns = [
         {
             title: 'Ф.И.О',
@@ -19,10 +43,11 @@ const Attendance = (props) => {
         {
             title: 'Телефонный номер',
             dataIndex: 'phone',
-            // sorter: {
-            //     compare: (a, b) => a.phone - b.phone,
-            //     multiple: 3,
-            // },
+
+        },
+        {
+            title: 'Должность',
+            dataIndex: 'position_name',
         },
         {
             title: 'Oбъект',
@@ -32,23 +57,31 @@ const Attendance = (props) => {
                     <>
 
 
+                                <Select
+                                    name="working_hours" onChange={postFormCon} style={{width: '150px'}}
+                                    showSearch
+                                    placeholder="Поиск..."
+                                    optionFilterProp="children"
+                                    filterOption={(input, option) =>
+                                        option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                                    }
+                                    filterSort={(optionA, optionB) =>
+                                        optionA.children.toLowerCase().localeCompare(optionB.children.toLowerCase())
+                                    }
+                                >
+                                    {props.objectsList.map(item => (
+                                        <Option value={item.id}>{item.name}</Option>
+                                    ))}
+                                </Select>
 
-                        <Select name="working_hours" onChange={postFormCon} style={{width: '150px'}}>
-                            <Option></Option>
-                            {props.objectsList.map(item => (
-                                <Option value={item.id}>{item.name}</Option>
-                            ))}
-                        </Select>
                     </>
                 )
             }
         },
+
+
         {
-            title: 'Должность',
-            dataIndex: 'position_name',
-        },
-        {
-            title: 'Время отработало',
+            title:  'Время отработало' ,
             dataIndex: '',
 
             render: (action, record: { id: number }) => {
@@ -57,12 +90,49 @@ const Attendance = (props) => {
 
                         {/*<button type="primary" onClick={onEdit(record.id:number)}>edit</button>*/}
 
-                        <Select name="working_hours" onChange={postForm} style={{width: '80px'}}>
+
+
+                                <Select name="working_hours" onChange={postForm} style={{width: '80px'}}>
+                                    <Option></Option>
+                                    {props.workingHourList.map(item => (
+                                        <Option value={item.hour}>{item.hour} ч</Option>
+                                    ))}
+                                </Select>
+
+                    </>
+                )
+            }
+        },
+
+
+        {
+            title: 'Причина',
+            dataIndex: '',
+
+            render: (action, record: { id: number }) => {
+                return (
+                    <>
+                        <Select name="working_hours" onChange={reasonEvent} style={{width: '80px'}}>
                             <Option></Option>
-                            {props.workingHourList.map(item => (
-                                <Option value={item.hour}>{item.hour} ч</Option>
+                            {props.reasonAllList.map(item => (
+                                <Option value={item.id}>{item.reason} </Option>
                             ))}
                         </Select>
+                    </>
+                )
+            }
+        },
+
+
+        {
+            title: 'Причина',
+            dataIndex: '',
+
+            render: (action, record: { id: number }) => {
+                return (
+                    <>
+                        <input type='text ' onChange={reasonContext} name='context' />
+
                     </>
                 )
             }
@@ -89,9 +159,9 @@ const Attendance = (props) => {
 
     ];
 
-
     const [hourSelect, sethourSelect] = useState('')
     const [constructionSelect, setconstructionSelect] = useState('')
+
 
     const postForm = (value) => {
         sethourSelect(value);
@@ -114,6 +184,9 @@ const Attendance = (props) => {
             worker: record.id,
             construction: constructionSelect,
             working_hours: hourSelect,
+            reason: reasonT,
+            context: reasonCon,
+
 
         })
 
@@ -139,6 +212,7 @@ const Attendance = (props) => {
         props.getAttendanceList()
         props.hoursLits()
         props.getObjects()
+        props.reasonList()
 
 
     }, [])
@@ -157,12 +231,14 @@ const Attendance = (props) => {
 
 const mapStateToProps = (state) => {
     return {
+
         attendanceWorkerList: state.attendanceList.attendanceWorkerList,
         objectsList: state.objectsList.objectsList,
-        workingHourList: state.attendanceList.workingHourList
+        workingHourList: state.attendanceList.workingHourList,
+        reasonAllList: state.attendanceList.reasonAllList,
 
     }
 }
 
 
-export default connect(mapStateToProps, {getAttendanceList, hoursLits, getObjects})(Attendance);
+export default connect(mapStateToProps, {getAttendanceList, hoursLits, reasonList,getObjects})(Attendance);

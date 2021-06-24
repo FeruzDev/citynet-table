@@ -8,6 +8,7 @@ export function getTableList(){
         axios.get(API_PATH + "account/v1/worker-table-list/", {headers: {Authorization: "Bearer " + localStorage.getItem(TOKEN_NAME)}})
             .then(res => {
                 dispatch(updateState({tableList: res.data}));
+                dispatch(updateState({tableListForDate: res.data}));
 
                 console.log(res)
 

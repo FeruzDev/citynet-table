@@ -3,6 +3,7 @@ import {UPDATE_STATE} from "../actionTypes/objectsActionType";
 const initialState ={
 
     tableList: [],
+    tableListForDate: [],
 
 
 

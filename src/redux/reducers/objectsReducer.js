@@ -2,8 +2,11 @@ import {UPDATE_STATE} from "../actionTypes/objectsActionType";
 
 const initialState ={
     modalOpen: false,
+    modalOpenConstruction: false,
     objectsList: [],
+    constructionList: [],
     objectsInActiveList: [],
+    constructionInActiveList: [],
     objectsInActive: false,
     selectedImage: "",
     selectedIdForDelete: null,
@@ -11,6 +14,7 @@ const initialState ={
     deleteOpenModal: false,
     returnOpenModal: false,
     editOpenModal: false,
+    editOpenModalConstruction: false,
 
     selectedObject: {},
 

@@ -16,29 +16,53 @@ import Client from "./page/Client";
 import TopNavbar from "./component/TopNavbar";
 import Table from "./page/Table";
 import DatePicker from "./page/DataPicker";
+import Construction from "./page/Construction";
+
 
 function App() {
   return (
     <div className="p-0 m-0">
 
         <BrowserRouter>
-            <TopNavbar/>
-            <Navbar />
+
+            {window.location.pathname !== "/" ?
+                <>
+
+                    <TopNavbar/>
+                    <Navbar />
+                </> : ""
+            }
+
+
+
+
+
             <Switch>
                 <Route exact path='/' component={Login}/>
+
+
                 <PrivateRoute exact path='/registration' component={Registration}/>
                 <PrivateRoute exact path='/objects' component={Objects}/>
+                <PrivateRoute exact path='/construction' component={Construction}/>
                 <PrivateRoute exact path='/users' component={Users}/>
                 <PrivateRoute exact path='/home' component={Home} />
                 <PrivateRoute exact path='/all-workers' component={AllWorker} />
                 <PrivateRoute exact path='/positions' component={Positions} />
-                <PrivateRoute exact path='/attendance' component={Attendance} />
-                <PrivateRoute exact path='/client' component={Client} />
-                <PrivateRoute exact path='/tabel' component={Table} />
                 <PrivateRoute exact path='/datepicker' component={DatePicker} />
-
                 <PrivateRoute exact path='/tabelrep' component={TableRep} />
 
+
+
+
+
+                <PrivateRoute exact path='/tabel' component={Table} />
+
+
+
+
+
+                <PrivateRoute exact path='/attendance' component={Attendance} />
+                <PrivateRoute exact path='/client' component={Client} />
             </Switch>
         </BrowserRouter>
 

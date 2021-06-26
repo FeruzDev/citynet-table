@@ -8,7 +8,6 @@ import axios from "axios";
 import {API_PATH, TOKEN_NAME} from "../tools/constants";
 import {getObjects} from "../redux/actions/objectsAction";
 import {toast, ToastContainer} from "react-toastify";
-import {AvField} from "availity-reactstrap-validation";
 
 
 
@@ -27,7 +26,7 @@ const Attendance = (props) => {
 
 
     const reasonContext = (e) =>{
-        setreasonContext(e)
+        setreasonContext(e.target.value)
 
 
 
@@ -112,7 +111,7 @@ const Attendance = (props) => {
             render: (action, record: { id: number }) => {
                 return (
                     <>
-                        <Select name="working_hours" onChange={reasonEvent} style={{width: '80px'}}>
+                        <Select name="reason" onChange={reasonEvent} style={{width: '80px'}}>
                             <Option></Option>
                             {props.reasonAllList.map(item => (
                                 <Option value={item.id}>{item.reason} </Option>
@@ -159,51 +158,44 @@ const Attendance = (props) => {
 
     ];
 
-    const [hourSelect, sethourSelect] = useState('')
     const [constructionSelect, setconstructionSelect] = useState('')
 
 
-    const postForm = (value) => {
-        sethourSelect(value);
+    const [hourSelect, sethourSelect] = useState('')
+
+
+    const postForm = (e) => {
+
+
+            sethourSelect(e.target.value);
+
     }
 
     const postFormCon = (value) => {
         setconstructionSelect(value);
     }
-    const saveData = (record) => {
-
-        // let data = new FormData();
-        //
-        // data.append("working_hours", hourSelect)
-        // data.append("worker", record.id)
-        // data.append("construction", constructionSelect)
-
-        let arr =[];
-
-        arr.push({
-            worker: record.id,
-            construction: constructionSelect,
-            working_hours: hourSelect,
-            reason: reasonT,
-            context: reasonCon,
+    const  saveData =  async(record) => {
 
 
+            let arr =[];
+
+            arr.push({
+                worker: record.id,
+                construction: constructionSelect,
+                working_hours:    hourSelect ? hourSelect :  sethourSelect(0),
+                reason: reasonT,
+                context: reasonCon,
         })
 
-        console.log('Edit record number', record)
-
-        console.log(arr)
-
-        axios.post(API_PATH + "attendance/v1/attendance-list-create/" , arr, {headers: {Authorization: "Bearer " + localStorage.getItem(TOKEN_NAME)}})
+          axios.post(API_PATH + "attendance/v1/attendance-list-create/" , arr, {headers: {Authorization: "Bearer " + localStorage.getItem(TOKEN_NAME)}})
             .then(res => {
-
-
                 toast.success("Успешно добавлен")
-                console.log(res)
                 props.getAttendanceList();
+
 
             })
 
+         setReason('')
 
     }
 

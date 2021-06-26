@@ -15,3 +15,28 @@ export function getTableList(){
             })
     }
 }
+
+
+
+
+export function selectedMonth(data){
+    return function (dispatch){
+        dispatch(updateState({selectMonth: data}));
+        //
+
+        axios.get(API_PATH + `account/v1/worker-table-list?month=` + data.slice(5) + `&year=` +  data.slice(0, 4) , {headers: {Authorization: "Bearer " + localStorage.getItem(TOKEN_NAME)}})
+            .then(res => {
+                dispatch(updateState({tableList: res.data}));
+                dispatch(updateState({tableListForDate: res.data}));
+
+                console.log(res)
+
+            })
+
+
+
+        console.log(selectedMonth)
+        console.log('keldi')
+    }
+}
+

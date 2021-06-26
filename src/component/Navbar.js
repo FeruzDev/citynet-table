@@ -31,7 +31,7 @@ const Navbar = () => {
                                       </div>
                                   </li>
                                   <li className="nav-item">
-                                      <Link to='/client'  className="nav-link"  >Client</Link>
+                                      {/*<Link to='/client'  className="nav-link"  >Client</Link>*/}
                                   </li></>
 
                             :

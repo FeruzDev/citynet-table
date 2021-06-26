@@ -20,8 +20,7 @@ import Registration from "./component/Registration";
 import Home from "./page/Home";
 
 
-const store = createStore(rootReducer, compose(applyMiddleware(thunk),
-    window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()));
+const store = createStore(rootReducer, compose(applyMiddleware(thunk)))
 
 
 ReactDOM.render(

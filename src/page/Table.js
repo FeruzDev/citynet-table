@@ -3,7 +3,8 @@ import React, {useEffect, useState} from 'react';
 import {connect} from "react-redux";
 import {API_PATH, TOKEN_NAME} from "../tools/constants";
 import { DatePicker, Space } from 'antd';
-import {getTableList} from "../redux/actions/tabelAction";
+import {getTableList, selectedMonth} from "../redux/actions/tabelAction";
+import {updateState} from "../redux/actions/usersAction";
 
 const Table = (props) => {
 
@@ -47,14 +48,14 @@ const Table = (props) => {
 
     const [monthL, setMonthL] = useState([])
 
-    const N = 3;
+
     const allDays = Array.from({length: getDaysInMonthForTH(month, year)}, (_, index) => index + 1);
     console.log(allDays)
 
 
-    const getDatePicker = (date, dateString, value) =>{
-        console.log( dateString);
+    const getDatePicker = (date, dateString) =>{
 
+        props.selectedMonth(dateString);
     }
 
 
@@ -65,10 +66,10 @@ const Table = (props) => {
 
 
                 <Space direction="horizontal">
-                    <DatePicker onChange={getDatePicker} />
-                    <DatePicker onChange={getDatePicker} />
+
                     <DatePicker onChange={getDatePicker} picker="month" />
-                    <DatePicker onChange={getDatePicker} picker="year" />
+
+
                 </Space>
             </div>
 
@@ -84,9 +85,11 @@ const Table = (props) => {
                                 {
                                     all
                                 }
+
                             </th>
                         ))
                     }
+
                 </tr>
 
                 {
@@ -103,6 +106,7 @@ const Table = (props) => {
                                         <th>
                                             {
                                                 all
+
                                             }
                                         </th>
                                     ))
@@ -184,8 +188,9 @@ const mapStateToProps = (state) => {
     return {
         tableList : state.tableList.tableList,
         tableListForDate : state.tableList.tableListForDate,
+        selectMonth : state.tableList.selectMonth,
 
     }
 }
 
-export default connect(mapStateToProps, {getTableList})(Table) ;
+export default connect(mapStateToProps, {getTableList, selectedMonth})(Table) ;

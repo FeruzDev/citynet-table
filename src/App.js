@@ -17,6 +17,7 @@ import TopNavbar from "./component/TopNavbar";
 import Table from "./page/Table";
 import DatePicker from "./page/DataPicker";
 import Construction from "./page/Construction";
+import ReportTable from "./page/ReportTable";
 
 
 function App() {
@@ -50,6 +51,7 @@ function App() {
                 <PrivateRoute exact path='/positions' component={Positions} />
                 <PrivateRoute exact path='/datepicker' component={DatePicker} />
                 <PrivateRoute exact path='/tabelrep' component={TableRep} />
+                <PrivateRoute exact path='/report-table' component={ReportTable} />
 
 
 

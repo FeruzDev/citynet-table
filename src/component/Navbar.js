@@ -26,7 +26,7 @@ const Navbar = () => {
                                       </a>
                                       <div className="dropdown-menu" aria-labelledby="navbarDropdown">
                                           <Link className="dropdown-item" to="/tabel" >Табель</Link>
-                                          <a className="dropdown-item" href="#">Табель (уволенные)</a>
+                                          <a className="dropdown-item" href="#">Табель (Неактивный)</a>
 
                                       </div>
                                   </li>
@@ -52,8 +52,8 @@ const Navbar = () => {
                                                 Объекты
                                             </a>
                                             <div className="dropdown-menu" aria-labelledby="navbarDropdown">
-                                                <Link className="dropdown-item" to="/objects" >Объекты</Link>
-                                                <Link className="dropdown-item" to="/construction">Объекты 2</Link>
+                                                <Link className="dropdown-item" to="/objects" >Блоки</Link>
+                                                <Link className="dropdown-item" to="/construction">Объекты</Link>
 
                                             </div>
                                         </li>
@@ -71,7 +71,7 @@ const Navbar = () => {
                                             </a>
                                             <div className="dropdown-menu" aria-labelledby="navbarDropdown">
                                                 <Link className="dropdown-item" to="/tabel" >Табель</Link>
-                                                <a className="dropdown-item" href="#">Табель (уволенные)</a>
+                                                <a className="dropdown-item" href="#">Табель (Неактивный)</a>
 
                                             </div>
                                         </li>
@@ -81,8 +81,8 @@ const Navbar = () => {
                                                 Отчеты
                                             </a>
                                             <div className="dropdown-menu" aria-labelledby="navbarDropdown">
-                                                <Link className="dropdown-item" href="#">Отчеты</Link>
-                                                <a className="dropdown-item" href="#">Отчеты 2 (все)</a>
+                                                <Link className="dropdown-item" to='report-table'>Отчеты</Link>
+                                                <Link className="dropdown-item">Отчеты 2 (все)</Link>
                                                 <a className="dropdown-item" href="#">Отчет за каждый день</a>
 
                                             </div>
@@ -109,7 +109,7 @@ const Navbar = () => {
                                         </a>
                                         <div className="dropdown-menu" aria-labelledby="navbarDropdown">
                                             <Link className="dropdown-item" to="/tabel" >Табель</Link>
-                                            <a className="dropdown-item" href="#">Табель (уволенные)</a>
+                                            <a className="dropdown-item" href="#">Табель (Неактивный)</a>
 
                                         </div>
                                     </li>

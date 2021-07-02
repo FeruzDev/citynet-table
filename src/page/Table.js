@@ -67,7 +67,7 @@ const Table = (props) => {
 
                 <Space direction="horizontal">
 
-                    <DatePicker onChange={getDatePicker} picker="month" />
+                    <DatePicker onChange={() => getDatePicker} picker="month" />
 
 
                 </Space>
@@ -90,6 +90,9 @@ const Table = (props) => {
                         ))
                     }
 
+                    <th>
+                        Итоги
+                    </th>
                 </tr>
 
                 {
@@ -132,25 +135,15 @@ const Table = (props) => {
                                         {
                                             allDays.map((nimadir, index) =>(
 
-                                                // <td> {item2.attendance[i] ? item2.attendance[i].date_created.slice(8 , 10 ) : '0'}</td>
-                                                <td>
-
-
-
-
-                                                    {/*{ item2.attendance[i]*/}
-                                                    {/*    ?*/}
-                                                    {/*    console.log(item2.attendance[i] + ' ' +  item2.attendance[i].date_created.slice(8 , 10 ))*/}
-
-
-                                                    {/*    :*/}
-                                                    {/*    '-' */}
-                                                    {/*}*/}
+                                                 <td>
 
                                                     { item2.attendance[i2]
                                                         ?
-                                                        item2.attendance.filter(el => el.date_created.slice(8 , 10 ) == (index + 1))[0] ?
-                                                            item2.attendance.filter(el => el.date_created.slice(8 , 10 ) == (index + 1))[0].working_hours :
+                                                        item2.attendance.filter(el =>
+                                                            el.date_created.slice(8 , 10 ) == (index + 1))[0]
+                                                            ?
+                                                           <b> {item2.attendance.filter(el => el.date_created.slice(8, 10) == (index + 1))[0].working_hours}</b>
+                                                            :
                                                             '0'
                                                         :
                                                         '0'}
@@ -160,6 +153,10 @@ const Table = (props) => {
 
                                             ))
                                         }
+
+                                        <td>
+                                            {item2.total} ч
+                                        </td>
 
 
 

@@ -6,7 +6,7 @@ import {
     addObjects,
     editObject,
     deleteObject,
-    getInActiveObjects,
+    getInActiveObjects, getConstruction,
 
 } from "../redux/actions/objectsAction"
 import { AvForm, AvField } from 'availity-reactstrap-validation';
@@ -176,6 +176,7 @@ const Objects = (props) => {
 
 
     useEffect(()=> {
+        props.getConstruction()
         props.getObjects()
         props.getInActiveObjects()
     }, [])
@@ -246,17 +247,17 @@ const Objects = (props) => {
 
 
             <div className="objectHeader">
-                <h2>Список объектов</h2>
+                <h2>Список блоков</h2>
 
         <div>
-            <button className="btn  addObject" onClick={changeModal}><img src="/img/icon/add.png" alt=""/>Добавить новый объект</button>
+            <button className="btn  addObject" onClick={changeModal}><img src="/img/icon/add.png" alt=""/>Добавить блок</button>
 
 
 
 
             <button className={"btn activeObject ml-3"} onClick={() => props.updateState({objectsInActive: false})} ><span></span>Активный</button>
 
-            <button className="btn removeObject ml-3" onClick={() => props.updateState({objectsInActive: true})} > <span></span>Уволенные</button>
+            <button className="btn removeObject ml-3" onClick={() => props.updateState({objectsInActive: true})} > <span></span>Неактивный</button>
 
         </div>
             </div>
@@ -280,12 +281,10 @@ const Objects = (props) => {
                 className="objectModal"
                 contentLabel="Example Modal"
             >
-                {/*<button onClick={changeModal} className="btn  mdi_close"><img src="/img/icon/mdi_close.png" alt=""/></button>*/}
-
                 <ModalBody>
                   <div className="addObjectModal">
 
-                      <h4 className="mb-4">Добавить новый объект</h4>
+                      <h4 className="mb-4">Добавить блок</h4>
                       <AvForm onValidSubmit={saveObjects}
                       >
 
@@ -296,6 +295,13 @@ const Objects = (props) => {
                               label="Введите название"
                               required
                           />
+
+                          <AvField type='select' name="object"  style={{ width: "100%" }}  >
+                              {props.constructionList.map(item =>(
+                                  <option value={item.id}>{item.name}</option>
+                              ))}
+                          </AvField>
+
 
                           <AvField
                               name="description"
@@ -337,6 +343,15 @@ const Objects = (props) => {
                                 label="Введите название"
                                 required
                             />
+
+
+
+                            <AvField type='select' name="object"  style={{ width: "100%" }}  >
+                                {props.constructionList.map(item =>(
+                                    <option value={item.id}>{item.name}</option>
+                                ))}
+                            </AvField>
+
 
                             <AvField
                                 name="description"
@@ -392,6 +407,7 @@ const mapStateToProps = (state) => {
         objectsInActive: state.objectsList.objectsInActive,
 
         selectedImage: state.objectsList.selectedImage,
+        constructionList: state.objectsList.constructionList,
 
         objectsList: state.objectsList.objectsList,
         objectsInActiveList: state.objectsList.objectsInActiveList,
@@ -401,4 +417,4 @@ const mapStateToProps = (state) => {
         selectedObject: state.objectsList.selectedObject,
     }
 }
-export default connect(mapStateToProps,{getObjects,  editObject,getInActiveObjects, updateState,deleteObject, addObjects})(Objects);
+export default connect(mapStateToProps,{getObjects, getConstruction, editObject,getInActiveObjects, updateState,deleteObject, addObjects})(Objects);

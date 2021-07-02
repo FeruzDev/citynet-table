@@ -114,30 +114,6 @@ export function getUsersValue(){
 
 
 
-
-
-export function saveFile(data){
-    return function (dispatch) {
-        let image = new FormData();
-        image.append("image", data);
-
-        axios.post(API_PATH + "account/v1/account-register/", image)
-            .then(res => {
-                console.log(res);
-                if (res.status === 200){
-                    dispatch(updateState({selectedImage: res.data.id}))
-                } else {
-                    toast.error("Xatolik!!!");
-                }
-            })
-    }
-}
-
-
-
-
-
-
 export function addUsers(data) {
 
     return function (dispatch) {
@@ -150,11 +126,11 @@ export function addUsers(data) {
 
 
 
-                    toast.success("Успешно добавлен")
-                    dispatch(getUsers());
-                    dispatch(updateState({modalOpen: false}));
-                    dispatch(updateState({accountId: res.data.id}));
-                    dispatch(updateState({modalOpenEdit: true}));
+                toast.success("Успешно добавлен")
+                dispatch(getUsers());
+                dispatch(updateState({modalOpen: false}));
+                dispatch(updateState({accountId: res.data.id}));
+                dispatch(updateState({modalOpenEdit: true}));
 
 
 
@@ -172,6 +148,37 @@ export function addUsers(data) {
     }
 
 }
+
+
+
+
+
+export function saveFile(data){
+    return function (dispatch) {
+        let image = new FormData();
+        image.append("image", data);
+        console.log("----------" + image)
+
+        axios.put(API_PATH + "account/v1/worker-detail-update/" + data.accountId + "/", image ,{headers: {Authorization: "Bearer " + localStorage.getItem(TOKEN_NAME)}})
+            .then(res => {
+                console.log(res);
+                if (res.status === 200){
+                    dispatch(updateState({selectedImage: res.data.id}))
+                } else {
+                    toast.error("Error !!!");
+                }
+            })
+    }
+}
+
+
+
+
+
+
+
+
+
 
 
 

@@ -16,7 +16,7 @@ import {
     editUsers,
     getObjectsForItem,
     getUsersPosition,
-    getUsersInActive
+    getUsersInActive, saveFile
 } from "../redux/actions/usersAction";
 import {Button, Select, Option, Table} from "antd";
 import DeleteOutlined from "@ant-design/icons/es/icons/DeleteOutlined";
@@ -24,6 +24,7 @@ import DeleteOutlined from "@ant-design/icons/es/icons/DeleteOutlined";
 import CloseOutlined from "@ant-design/icons/es/icons/CloseOutlined";
 import UndoOutlined from "@ant-design/icons/es/icons/UndoOutlined";
 import {getObjects} from "../redux/actions/objectsAction";
+import {getPosition} from "../redux/actions/positionAction";
 
 const Users = (props) => {
 
@@ -78,9 +79,9 @@ const Users = (props) => {
                         {/*<button type="primary" onClick={onEdit(record.id:number)}>edit</button>*/}
 
 
-                        <Button className="border-0  pl-1 pr-1 text-secondary" ReactNode icon={<FormOutlined style={{ fontSize: '24px'  }}/>} onClick={(): void => onEdit(record.id)} />
+                        <Button className="border-0  pl-1 pr-1 text-secondary" ReactNode icon={<FormOutlined style={{ fontSize: '24px'  }}/>} onClick={() => onEdit(record.id)} />
 
-                        <Button className="border-0 ml-3  pl-1 pr-1 text-secondary" ReactNode icon={<DeleteOutlined style={{ fontSize: '24px'   }}/>}  onClick={(): void => onDelete(record.id)} />
+                        <Button className="border-0 ml-3  pl-1 pr-1 text-secondary" ReactNode icon={<DeleteOutlined style={{ fontSize: '24px'   }}/>}  onClick={()  => onDelete(record.id)} />
 
                     </>
                 )
@@ -155,8 +156,6 @@ const Users = (props) => {
 
     const onReturn = (id) => {
 
-        console.log('Remove record number', id)
-
 
         props.updateState({returnOpenModal: !props.returnOpenModal})
 
@@ -169,9 +168,10 @@ const Users = (props) => {
 
     const onEdit = (id) => {
         console.log('Edit record number', id)
+        props.updateState({modalOpenEditAgain: !props.modalOpenEditAgain})
 
         props.updateState({accountIdForEditAgain: id})
-
+        setuserValueObjectState({})
 
         axios.get(API_PATH + "account/v1/worker-detail-update/" + id + "/", {headers: {Authorization: "Bearer " + localStorage.getItem(TOKEN_NAME)}})
             .then(res => {
@@ -193,7 +193,8 @@ const Users = (props) => {
         props.getUsersInActive()
 
         props.getObjectsForItem();
-        props.getUsersPosition();
+
+        props.getPosition()
 
 
 
@@ -219,11 +220,12 @@ const Users = (props) => {
 
 
     }
+
+
     const savePhoto = (e) => {
         console.log(e.target.files[0])
        props.saveFile(e.target.files[0]);
     }
-
 
 
     const [checked, setChecked] = useState(false)
@@ -317,6 +319,7 @@ const Users = (props) => {
 
         event.preventDefault()
         let data2 = new FormData();
+        let imagefile = document.querySelector('#file');
         data2.append("first_name", event.target.first_name.value)
         data2.append("last_name", event.target.last_name.value)
         data2.append("middle_name", event.target.middle_name.value)
@@ -332,7 +335,48 @@ const Users = (props) => {
         data2.append("construction", event.target.construction.value)
         data2.append("position", event.target.position.value)
         data2.append("phone", event.target.phone.value)
-        axios.put(API_PATH + "account/v1/worker-detail-update/" + props.accountId + "/", data2,{headers: {Authorization: "Bearer " + localStorage.getItem(TOKEN_NAME)}})
+        data2.append("image", imagefile.files[0])
+
+
+
+        axios.put(API_PATH + "account/v1/worker-detail-update/" + props.accountId + "/", data2,{headers: {Authorization: "Bearer " + localStorage.getItem(TOKEN_NAME)},     'Content-Type': 'multipart/form-data'})
+            .then(res => {
+                console.log(res)
+                props.getUsers()
+
+            })
+
+
+
+        changeModalEdit()
+
+
+
+    }
+
+
+    const editHeaderUsers = (event, values , id) => {
+
+
+        event.preventDefault()
+        let data2 = new FormData();
+        let imagefile = document.querySelector('#file');
+        data2.append("first_name", event.target.first_name.value)
+        data2.append("last_name", event.target.last_name.value)
+        data2.append("middle_name", event.target.middle_name.value)
+
+        data2.append("is_header", event.target.is_header.value)
+
+
+        data2.append("children.phone", event.target.phone.value)
+        data2.append("construction", event.target.construction.value)
+        data2.append("position", event.target.position.value)
+        data2.append("phone", event.target.phone.value)
+        data2.append("image", imagefile.files[0])
+
+
+
+        axios.put(API_PATH + "account/v1/worker-detail-update/" + props.accountId + "/", data2,{headers: {Authorization: "Bearer " + localStorage.getItem(TOKEN_NAME)},     'Content-Type': 'multipart/form-data'})
             .then(res => {
                 console.log(res)
                 props.getUsers()
@@ -349,12 +393,13 @@ const Users = (props) => {
 
 
 
-
     const editUsersAgain = (event, values , id) => {
 
 
         event.preventDefault()
         let data2 = new FormData();
+        let imagefile = document.querySelector('#file');
+
         data2.append("first_name", event.target.first_name.value)
         data2.append("last_name", event.target.last_name.value)
         data2.append("middle_name", event.target.middle_name.value)
@@ -365,7 +410,11 @@ const Users = (props) => {
         data2.append("construction", event.target.construction.value)
         data2.append("position", event.target.position.value)
         data2.append("phone", event.target.phone.value)
-        axios.put(API_PATH + "account/v1/worker-detail-update/" + props.accountIdForEditAgain + "/", data2,{headers: {Authorization: "Bearer " + localStorage.getItem(TOKEN_NAME)}})
+        data2.append("image", imagefile.files[0])
+
+
+
+        axios.put(API_PATH + "account/v1/worker-detail-update/" + props.accountIdForEditAgain + "/", data2,{headers: {Authorization: "Bearer " + localStorage.getItem(TOKEN_NAME)}, 'Content-Type': 'multipart/form-data'})
             .then(res => {
                 console.log(res)
                 props.getUsers()
@@ -381,7 +430,16 @@ const Users = (props) => {
 
     }
 
+    const activeListWorkers = () =>{
+        props.updateState({usersInActive: false})
+        props.getUsers()
+    }
 
+
+        const inActiveListWorkers = () =>{
+            props.updateState({usersInActive: true})
+            props.getUsersInActive()
+            }
 
     // const [header_worker,setHeader_worker] = useState('')
 
@@ -434,10 +492,10 @@ const Users = (props) => {
 
                 <div>
 
-                    <button className="btn addObject" onClick={changeModal}><img src="/img/icon/add.png" alt=""/>Добавить новый пользовател</button>
-                    <button className="btn activeObject ml-3" onClick={() => props.updateState({usersInActive: false})} ><span></span>Активный</button>
+                    <button className="btn addObject" onClick={changeModal}><img src="/img/icon/add.png" alt=""/>Список бригад</button>
+                    <button className="btn activeObject ml-3" onClick={activeListWorkers} ><span></span>Активный</button>
 
-                    <button className="btn removeObject ml-3" onClick={() => props.updateState({usersInActive: true})} ><span></span>Уволенные</button>
+                    <button className="btn removeObject ml-3" onClick={ inActiveListWorkers} ><span></span>Неактивный</button>
 
                 </div>
             </div>
@@ -485,7 +543,7 @@ const Users = (props) => {
                         label="Подвердите пароль"
                         required
                     />
-                    <button className="btn formAddButton"  >Добавлять</button>
+                    <button className="btn formAddButton"  >Добавить</button>
                     <button className="btn  formCancel   " onClick={changeModal}  >Отмена</button>
 
                 </AvForm>
@@ -498,7 +556,7 @@ const Users = (props) => {
             >
                 {/*<Button onClick={changeModalEdit}  className='mdi_close border-0 p-0 mr-3 mt-1'>   <CloseOutlined  style={{ fontSize: '24px' , color: "#b9b9b9"  }} />*/}
                 {/*</Button>*/}
-                <AvForm onValidSubmit={editUsers} enctype="multipart/form-data" method="post" >
+                <AvForm onValidSubmit={checked ? editHeaderUsers : editUsers} enctype="multipart/form-data" method="post" >
 
                     <div className="row">
                         <div className="col-md-6">
@@ -528,7 +586,7 @@ const Users = (props) => {
                             />
 
 
-                            <AvField  onClick={() => setChecked(!checked)} type="checkbox" label="is_header"   name="is_header" />
+                            <AvField  onClick={() => setChecked(!checked)} value={checked} type="checkbox" label="is_header"   name="is_header" />
 
 
                             {
@@ -569,26 +627,20 @@ const Users = (props) => {
 
 
                             <AvField type='select' name="position" label="Position"  style={{ width: "100%" }}  >
-                                {props.userPosition.map(item =>(
+                                {props.positionList.map(item =>(
                                     <option value={item.id}>{item.name}</option>
                                 ))}
                             </AvField>
 
-
-                            <input
-                                type="file"
-                                id="file"
-                                name="image"
-                                required
-                                onChange={savePhoto}
-                                className="form-control"/>
-
+                            <input type="file" id="file"
+                                   onChange={savePhoto}
+                                   className="form-control"/>
 
                         </div>
                     </div>
 
 
-                    <button className="btn formAddButton"  >Добавлять</button>
+                    <button className="btn formAddButton"  >Добавить</button>
                     <button className="btn  formCancel   " onClick={changeModalEdit}  >Отмена</button>
                 </AvForm>
             </Modal>
@@ -665,7 +717,7 @@ const Users = (props) => {
 
 
                             <AvField type='select' name="position" label="Position"  style={{ width: "100%" }}  >
-                                {props.userPosition.map(item =>(
+                                {props.positionList.map(item =>(
                                     <option value={item.id}>{item.name}</option>
                                 ))}
                             </AvField>
@@ -747,7 +799,9 @@ const mapStateToProps = (state) => {
         deleteOpenModal: state.usersList.deleteOpenModal,
         returnOpenModal: state.usersList.returnOpenModal,
         objectsList: state.objectsList.objectsList,
-        userCheck: state.objectsList.userCheck
+        userCheck: state.objectsList.userCheck,
+        positionList: state.positionList.positionList,
+
     }
 }
-export default connect(mapStateToProps,{getUsers, getObjectsForItem, getUsersInActive,  getUsersPosition, updateState, addUsers, editUsers})(Users);
+export default connect(mapStateToProps,{getUsers,getPosition, getObjectsForItem,saveFile, getUsersInActive,  getUsersPosition, updateState, addUsers, editUsers})(Users);

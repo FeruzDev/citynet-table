@@ -244,7 +244,7 @@ const Positions = (props) => {
 
                     <button className={"btn activeObject ml-3"} onClick={() => props.updateState({positionInActive: false})} ><span></span>Активный</button>
 
-                    <button className="btn removeObject ml-3" onClick={() => props.updateState({positionInActive: true})} > <span></span>Уволенные</button>
+                    <button className="btn removeObject ml-3" onClick={() => props.updateState({positionInActive: true})} > <span></span>Неактивный</button>
 
                 </div>
             </div>
@@ -260,7 +260,7 @@ const Positions = (props) => {
                     <AvField
                         name="name"
                         type="text"
-                        label="должность"
+                        label="Название должности"
                         required
                     />
 
@@ -273,7 +273,7 @@ const Positions = (props) => {
                     />
 
 
-                    <button className="btn formAddButton"  >Добавлять</button>
+                    <button className="btn formAddButton"  >Добавить</button>
                     <button className="btn  formCancel   " onClick={changeModal}  >Отмена</button>
                 </AvForm>
             </Modal>

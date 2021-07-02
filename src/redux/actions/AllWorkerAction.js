@@ -2,6 +2,7 @@ import  axios from "axios";
 import {API_PATH, TOKEN_NAME} from "../../tools/constants";
 import {UPDATE_STATE} from "../actionTypes/objectsActionType";
 import {toast} from "react-toastify";
+import {getUsers} from "./usersAction";
 export function updateState (data){
     return {
         type: UPDATE_STATE,
@@ -31,5 +32,31 @@ export function getAllUsers(){
     }
 }
 
+
+export function editUsers(data, props) {
+
+    return function (dispatch) {
+
+        axios.put(API_PATH + "account/v1/worker-detail-update/" + props.accountId + "/", data ,{headers: {Authorization: "Bearer " + localStorage.getItem(TOKEN_NAME)}})
+            .then(res =>{
+
+
+                console.log(res)
+
+                // editUser();
+
+                toast.success("Успешно редактировать")
+                dispatch(getUsers());
+
+                dispatch(updateState({modalOpenEdit: false}));
+
+            })
+            .catch(err =>{
+                toast(err)
+            })
+
+    }
+
+}
 
 

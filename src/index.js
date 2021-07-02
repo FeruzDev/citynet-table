@@ -23,7 +23,7 @@ import Home from "./page/Home";
 const store = createStore(rootReducer, compose(applyMiddleware(thunk)))
 
 
-ReactDOM.render(
+        ReactDOM.render(
  <Provider store={store}>
 
     <App/>

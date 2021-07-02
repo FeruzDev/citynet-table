@@ -6,6 +6,7 @@ export const adminPages = [
     "/positions",
     "/datepicker",
     "/tabelrep",
+    "/report-table",
     "/construction",
 
 ]

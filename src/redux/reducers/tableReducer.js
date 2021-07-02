@@ -5,6 +5,8 @@ const initialState ={
     tableList: [],
     tableListForDate: [],
     selectMonth: '',
+    selectPosition: '',
+    selectObject: ''
 
 
 

@@ -2,7 +2,7 @@ import axios from "axios";
 import {API_PATH, TOKEN_NAME} from "../../tools/constants";
 import {updateState} from "./usersAction";
 
-export function getTableList(){
+export function getTableList(month){
 
     return function (dispatch) {
         axios.get(API_PATH + "account/v1/worker-table-list/", {headers: {Authorization: "Bearer " + localStorage.getItem(TOKEN_NAME)}})
@@ -24,7 +24,7 @@ export function selectedMonth(data){
         dispatch(updateState({selectMonth: data}));
         //
 
-        axios.get(API_PATH + `account/v1/worker-table-list?month=` + data.slice(5) + `&year=` +  data.slice(0, 4) , {headers: {Authorization: "Bearer " + localStorage.getItem(TOKEN_NAME)}})
+        axios.get(API_PATH + `account/v1/worker-table-list ` , {headers: {Authorization: "Bearer " + localStorage.getItem(TOKEN_NAME)}})
             .then(res => {
                 dispatch(updateState({tableList: res.data}));
                 dispatch(updateState({tableListForDate: res.data}));

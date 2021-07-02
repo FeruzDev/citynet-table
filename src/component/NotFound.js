@@ -9,9 +9,9 @@ const NotFound = () => {
                     <div className="col-4 offset-4 my-5 text-center">
                         <img src="/404.png" alt="" className='w-100'/>
 
-                        <h4 className="mt-5">Page not found !</h4>
+                        <h4 className="mt-5">Страница не найдена !</h4>
 
-                        <Link to='/'>Go to the home page</Link>
+                        <Link to='/'>Перейти на главную страницу</Link>
                     </div>
                 </div>
             </div>

@@ -176,7 +176,6 @@ const Construction = (props) => {
 
 
     useEffect(()=> {
-
         props.getConstruction()
         props.getInActiveConstruction()
     }, [])
@@ -250,14 +249,14 @@ const Construction = (props) => {
                 <h2>Список объектов</h2>
 
                 <div>
-                    <button className="btn  addObject" onClick={changeModal}><img src="/img/icon/add.png" alt=""/>Добавить новый объект</button>
+                    <button className="btn  addObject" onClick={changeModal}><img src="/img/icon/add.png" alt=""/>Добавить объект</button>
 
 
 
 
                     <button className={"btn activeObject ml-3"} onClick={() => props.updateState({objectsInActive: false})} ><span></span>Активный</button>
 
-                    <button className="btn removeObject ml-3" onClick={() => props.updateState({objectsInActive: true})} > <span></span>Уволенные</button>
+                    <button className="btn removeObject ml-3" onClick={() => props.updateState({objectsInActive: true})} > <span></span>Неактивный</button>
 
                 </div>
             </div>
@@ -297,6 +296,9 @@ const Construction = (props) => {
                                 label="Введите название"
                                 required
                             />
+
+
+
 
                             <AvField
                                 name="description"
@@ -393,9 +395,8 @@ const mapStateToProps = (state) => {
         editOpenModalConstruction: state.objectsList.editOpenModalConstruction,
         objectsInActive: state.objectsList.objectsInActive,
         constructionInActiveList: state.objectsList.constructionInActiveList,
-
         selectedImage: state.objectsList.selectedImage,
-
+        objList: state.usersList.objList,
         objectsList: state.objectsList.objectsList,
         constructionList: state.objectsList.constructionList,
         objectsInActiveList: state.objectsList.objectsInActiveList,

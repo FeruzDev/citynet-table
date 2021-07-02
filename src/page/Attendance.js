@@ -87,12 +87,8 @@ const Attendance = (props) => {
                 return (
                     <>
 
-                        {/*<button type="primary" onClick={onEdit(record.id:number)}>edit</button>*/}
-
-
-
                                 <Select name="working_hours" onChange={postForm} style={{width: '80px'}}>
-                                    <Option></Option>
+                                    <Option value={null}></Option>
                                     {props.workingHourList.map(item => (
                                         <Option value={item.hour}>{item.hour} ч</Option>
                                     ))}
@@ -112,7 +108,7 @@ const Attendance = (props) => {
                 return (
                     <>
                         <Select name="reason" onChange={reasonEvent} style={{width: '80px'}}>
-                            <Option></Option>
+                            <Option value={null}></Option>
                             {props.reasonAllList.map(item => (
                                 <Option value={item.id}>{item.reason} </Option>
                             ))}
@@ -146,11 +142,9 @@ const Attendance = (props) => {
                 return (
                     <>
 
-                        {/*<button type="primary" onClick={onEdit(record.id:number)}>edit</button>*/}
-
                         <Button className="border-0  pl-1 pr-1 text-secondary" ReactNode icon={<PlusOutlined
                             style={{fontSize: '24px', color: "#fff", backgroundColor: "#1F7BBF"}}/>}
-                                onClick={() => saveData(record)}/>
+                                onClick={  () => saveData(record)}/>
                     </>
                 )
             }
@@ -164,10 +158,10 @@ const Attendance = (props) => {
     const [hourSelect, sethourSelect] = useState('')
 
 
-    const postForm = (e) => {
+    const postForm = (value) => {
 
 
-            sethourSelect(e.target.value);
+            sethourSelect(value);
 
     }
 
@@ -187,15 +181,17 @@ const Attendance = (props) => {
                 context: reasonCon,
         })
 
-          axios.post(API_PATH + "attendance/v1/attendance-list-create/" , arr, {headers: {Authorization: "Bearer " + localStorage.getItem(TOKEN_NAME)}})
-            .then(res => {
-                toast.success("Успешно добавлен")
-                props.getAttendanceList();
 
 
-            })
+            axios.post(API_PATH + "attendance/v1/attendance-list-create/" , arr, {headers: {Authorization: "Bearer " + localStorage.getItem(TOKEN_NAME)}})
+                .then(res => {
+                    toast.success("Успешно добавлен")
+                    setReason('')
+                    sethourSelect('')
+                    setconstructionSelect('')
+                    props.getAttendanceList();
 
-         setReason('')
+                })
 
     }
 

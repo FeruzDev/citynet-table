@@ -45,11 +45,11 @@ const Positions = (props) => {
                         {/*<button type="primary" onClick={onEdit(record.id:number)}>edit</button>*/}
 
 
-                        <Button className="border-0  pl-1 pr-1 text-secondary" ReactNode icon={<FormOutlined style={{ fontSize: '24px'  }}/>} onClick={(): void => onEdit(record.id)} />
+                        <Button className="border-0  pl-1 pr-1 text-secondary" ReactNode icon={<FormOutlined style={{ fontSize: '24px'  }}/>} onClick={() => onEdit(record.id)} />
 
 
 
-                        <Button className="border-0 ml-3  pl-1 pr-1 text-secondary" ReactNode icon={<DeleteOutlined style={{ fontSize: '24px'   }}/>}  onClick={(): void => onDelete(record.id)} />
+                        <Button className="border-0 ml-3  pl-1 pr-1 text-secondary" ReactNode icon={<DeleteOutlined style={{ fontSize: '24px'   }}/>}  onClick={()  => onDelete(record.id)} />
                     </>
                 )
             }
@@ -72,7 +72,7 @@ const Positions = (props) => {
                 return (
                     <>
 
-                        {/*<button type="primary" onClick={onEdit(record.id:number)}>edit</button>*/}
+
 
 
                         <Button className="border-0  pl-1 pr-1 text-secondary" ReactNode icon={<FormOutlined style={{ fontSize: '24px'  }}/>} onClick={()  => onEdit(record.id)} />
@@ -96,22 +96,14 @@ const Positions = (props) => {
 
     const onEdit = (id) => {
 
-
-
-        console.log('Edit record number', id)
-
         axios.get(API_PATH + "position/v1/position-retrieve-update/" + id + "/", {headers: {Authorization: "Bearer " + localStorage.getItem(TOKEN_NAME)}})
             .then(res => {
                 setuserValuePositionState(res.data);
-                // props.updateState({modalOpenEditAgain: !props.modalOpenEditAgain})
+
                 props.updateState({editOpenModal: !props.editOpenModal})
 
-                console.log(res)
+
             })
-
-
-
-
 
 
     }
@@ -119,9 +111,6 @@ const Positions = (props) => {
     const [removePosition, setRemovePosition] = useState(null)
 
     const onDelete = (id) => {
-
-        console.log('Remove record number', id)
-
 
         props.updateState({deleteOpenModal: !props.deleteOpenModal})
 
@@ -205,7 +194,6 @@ const Positions = (props) => {
 
     const changeModal = () => {
         props.updateState({modalOpenPosition: !props.modalOpenPosition})
-
     }
 
 
@@ -240,7 +228,7 @@ const Positions = (props) => {
 
                 <div>
 
-                    <button className="btn addObject" onClick={changeModal}  ><img src="/img/icon/add.png" alt=""/>Добавить новый должность</button>
+                    <button className="btn addObject" onClick={changeModal}  ><img src="/img/icon/add.png" alt=""/>Добавить должность</button>
 
                     <button className={"btn activeObject ml-3"} onClick={() => props.updateState({positionInActive: false})} ><span></span>Активный</button>
 
@@ -286,12 +274,11 @@ const Positions = (props) => {
                 contentLabel="Example Modal"
 
             >
-                <button onClick={changeEditModal} className="btn  mdi_close"><img src="/img/icon/mdi_close.png" alt=""/></button>
 
                 <ModalBody>
                     <div className="addObjectModal">
 
-                        <h3 className="mb-4">Добавить новый объект</h3>
+                        <h3 className="mb-4">Изменить название должности</h3>
                         <AvForm onValidSubmit={editPosition}
                                 model={userValuePositionState}
                         >
@@ -311,6 +298,8 @@ const Positions = (props) => {
                             />
 
                             <button className="btn formAddButton mt-3"  >Сохранить</button>
+                            <button className="btn  formCancel  mt-3 "    >Отмена</button>
+
                         </AvForm>
                     </div>
                 </ModalBody>

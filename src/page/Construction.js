@@ -147,6 +147,7 @@ const Construction = (props) => {
 
                 props.updateState({deleteOpenModal: !props.deleteOpenModal})
                 props.getConstruction()
+                props.getInActiveConstruction()
 
             })
 
@@ -163,17 +164,13 @@ const Construction = (props) => {
 
                 props.updateState({returnOpenModal: !props.returnOpenModal})
                 props.getInActiveConstruction()
+                props.getConstruction()
 
             })
 
 
 
     }
-
-
-
-
-
 
     useEffect(()=> {
         props.getConstruction()

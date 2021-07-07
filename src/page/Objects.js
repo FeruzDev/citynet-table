@@ -147,6 +147,7 @@ const Objects = (props) => {
 
                 props.updateState({deleteOpenModal: !props.deleteOpenModal})
                 props.getObjects()
+                props.getInActiveObjects()
 
             })
 
@@ -163,14 +164,13 @@ const Objects = (props) => {
 
                 props.updateState({returnOpenModal: !props.returnOpenModal})
                 props.getInActiveObjects()
+                props.getObjects()
 
             })
 
 
 
     }
-
-
 
 
 

@@ -172,15 +172,15 @@ const AllWorker = (props) => {
 
         props.updateState({accountIdForEditAgain: id})
 
-
-        axios.get(API_PATH + "account/v1/worker-detail-update/" + id + "/", {headers: {Authorization: "Bearer " + localStorage.getItem(TOKEN_NAME)}})
-            .then(res => {
-                setuserValueObjectState(res.data)
-                props.updateState({modalOpenEditAgain: !props.modalOpenEditAgain})
-                // props.updateState({modalOpenEdit: !props.modalOpenEdit})
-
-            })
-
+        changeModalEditAgain()
+        // axios.get(API_PATH + "account/v1/worker-detail-update/" + id + "/", {headers: {Authorization: "Bearer " + localStorage.getItem(TOKEN_NAME)}})
+        //     .then(res => {
+        //         setuserValueObjectState(res.data)
+        //         props.updateState({modalOpenEditAgain: !props.modalOpenEditAgain})
+        //         // props.updateState({modalOpenEdit: !props.modalOpenEdit})
+        //
+        //     })
+        //
 
 
 
@@ -242,6 +242,7 @@ const AllWorker = (props) => {
         setRemoveObjects(id)
 
 
+
     }
 
 
@@ -253,7 +254,7 @@ const AllWorker = (props) => {
 
 
                 props.updateState({deleteOpenModal: !props.deleteOpenModal})
-                props.getUsers()
+                props.getAllUsers()
 
             })
 
@@ -262,11 +263,6 @@ const AllWorker = (props) => {
 
     }
 
-
-    //
-    // const edi = (item) =>{
-    //     alert(item.id)
-    // }
 
     const changeToggleForChildren = () => {
         props.updateState({toggleChildrenList: !props.toggleChildrenList})
@@ -341,12 +337,14 @@ const AllWorker = (props) => {
             .then(res => {
                 console.log(res)
                 props.getUsers()
+                props.getAllUsers()
 
             })
 
 
 
         changeModalEdit()
+
 
 
 
@@ -362,10 +360,7 @@ const AllWorker = (props) => {
         data2.append("first_name", event.target.first_name.value)
         data2.append("last_name", event.target.last_name.value)
         data2.append("middle_name", event.target.middle_name.value)
-
         data2.append("is_header", event.target.is_header.value)
-
-
         data2.append("children.phone", event.target.phone.value)
         data2.append("construction", event.target.construction.value)
         data2.append("position", event.target.position.value)
@@ -381,8 +376,6 @@ const AllWorker = (props) => {
 
                 setChecked(!checked)
             })
-
-
 
         changeModalEdit()
 
@@ -457,17 +450,12 @@ const AllWorker = (props) => {
 
     function handleSelectChange(event) {
 
-        // if you want to support some really old IEs, add
-        // event = event || window.event;
+
 
         var selectElement = event.target;
 
         var value = selectElement.value;
-        // to support really old browsers, you may use
-        // selectElement.value || selectElement.options[selectElement.selectedIndex].value;
-        // like el Dude has suggested
 
-        // do whatever you want with value
     }
 
     const rowSelection = {
@@ -494,7 +482,7 @@ const AllWorker = (props) => {
 
                 <div>
 
-                    <button className="btn addObject" onClick={changeModal}><img src="/img/icon/add.png" alt=""/>Список бригад</button>
+                    <button className="btn addObject" onClick={changeModal}><img src="/img/icon/add.png" alt=""/>Добавить сотрудника</button>
                     <button className="btn activeObject ml-3" onClick={activeListWorkers} ><span></span>Активный</button>
 
                     <button className="btn removeObject ml-3" onClick={ inActiveListWorkers} ><span></span>Неактивный</button>
@@ -569,7 +557,7 @@ const AllWorker = (props) => {
                                 name="first_name"
                                 type="text"
 
-                                label="Name"
+                                label="Имя"
                                 required
                             />
 
@@ -577,7 +565,7 @@ const AllWorker = (props) => {
                                 name="last_name"
                                 type="text"
 
-                                label="Last name"
+                                label="Фамилия"
                                 required
                             />
 
@@ -586,12 +574,12 @@ const AllWorker = (props) => {
                                 name="middle_name"
                                 type="text"
 
-                                label="Middle name"
+                                label="Oтчество"
                                 required
                             />
 
 
-                            <AvField  onClick={() => setChecked(!checked)}  value={checked} type="checkbox" label="is_header"   name="is_header" />
+                            <AvField  onClick={() => setChecked(!checked)}  value={checked} type="checkbox" label="Бригадир"   name="is_header" />
 
 
                             {
@@ -599,7 +587,7 @@ const AllWorker = (props) => {
                                     ''
                                     :
 
-                                    <AvField type='select' name="header_worker" label="Header worker"       style={{ width: "100%" }}  >
+                                    <AvField type='select' name="header_worker" label="Бригадa"       style={{ width: "100%" }}  >
                                         {props.usersList.map(item =>(
                                             <option  value={item.id}>{item.first_name} {item.last_name} {item.middle_name}</option>
                                         ))}
@@ -608,7 +596,7 @@ const AllWorker = (props) => {
                             }
 
 
-                            <label>Construction</label>
+                            <label>Объектa</label>
                             <AvField type='select' name="construction"  style={{ width: "100%" }}  >
                                 {props.objList.map(item =>(
                                     <option value={item.id}>{item.name}</option>
@@ -625,13 +613,13 @@ const AllWorker = (props) => {
                             <AvField
                                 name="phone"
                                 type="text"
-                                label="Phone "
+                                label="Телефон "
                                 required
                             />
 
 
 
-                            <AvField type='select' name="position" label="Position"  style={{ width: "100%" }}  >
+                            <AvField type='select' name="position" label="Должность"  style={{ width: "100%" }}  >
                                 {props.positionList.map(item =>(
                                     <option value={item.id}>{item.name}</option>
                                 ))}
@@ -641,6 +629,7 @@ const AllWorker = (props) => {
                                    id="file"
                                    required
                                    className="form-control"/>
+                            
 
                         </div>
                     </div>

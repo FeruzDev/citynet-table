@@ -31,15 +31,16 @@ const Users = (props) => {
 
     const columns = [
 
+
         {
-            title: 'Имя',
-            dataIndex: 'first_name',
+            title: 'Фамилия',
+            dataIndex: 'last_name',
 
 
         },
         {
-            title: 'Фамилия',
-            dataIndex: 'last_name',
+            title: 'Имя',
+            dataIndex: 'first_name',
 
 
         },
@@ -91,15 +92,16 @@ const Users = (props) => {
 
     const columnsForRemove = [
 
+
         {
-            title: 'Имя',
-            dataIndex: 'first_name',
+            title: 'Фамилия',
+            dataIndex: 'last_name',
 
 
         },
         {
-            title: 'Фамилия',
-            dataIndex: 'last_name',
+            title: 'Имя',
+            dataIndex: 'first_name',
 
 
         },
@@ -488,17 +490,22 @@ const Users = (props) => {
         <div className="Objects">
 
             <div className="objectHeader">
-                <h2>Список Пользователи</h2>
+                <h2>Список бригад</h2>
 
-                <div>
+                {/*<div>*/}
 
-                    <button className="btn addObject" onClick={changeModal}><img src="/img/icon/add.png" alt=""/>Список бригад</button>
-                    <button className="btn activeObject ml-3" onClick={activeListWorkers} ><span></span>Активный</button>
+                {/*    <button className="btn addObject" onClick={changeModal}><img src="/img/icon/add.png" alt=""/>Добавить сотрудника</button>*/}
+                {/*    */}
+                {/*    */}
+                {/*    */}
+                {/*    <button className="btn activeObject ml-3" onClick={activeListWorkers} ><span></span>Активный</button>*/}
 
-                    <button className="btn removeObject ml-3" onClick={ inActiveListWorkers} ><span></span>Неактивный</button>
+                {/*    <button className="btn removeObject ml-3" onClick={ inActiveListWorkers} ><span></span>Неактивный</button>*/}
 
-                </div>
+                {/*</div>*/}
             </div>
+
+
 
             {
                 props.usersInActive ?
@@ -564,7 +571,7 @@ const Users = (props) => {
                                 name="first_name"
                                 type="text"
 
-                                label="Name"
+                                label="Имя"
                                 required
                             />
 
@@ -572,7 +579,7 @@ const Users = (props) => {
                                 name="last_name"
                                 type="text"
 
-                                label="Last name"
+                                label="Фамилия"
                                 required
                             />
 
@@ -581,12 +588,12 @@ const Users = (props) => {
                                 name="middle_name"
                                 type="text"
 
-                                label="Middle name"
+                                label="Oтчество"
                                 required
                             />
 
 
-                            <AvField  onClick={() => setChecked(!checked)} value={checked} type="checkbox" label="is_header"   name="is_header" />
+                            <AvField  onClick={() => setChecked(!checked)} value={checked} type="checkbox" label="Бригадир"   name="is_header" />
 
 
                             {
@@ -594,7 +601,7 @@ const Users = (props) => {
                                         ''
                                       :
 
-                                    <AvField type='select' name="header_worker" label="Header worker"       style={{ width: "100%" }}  >
+                                    <AvField type='select' name="header_worker" label="Бригадир"       style={{ width: "100%" }}  >
                                         {props.usersList.map(item =>(
                                             <option  value={item.id}>{item.first_name} {item.last_name} {item.middle_name}</option>
                                         ))}
@@ -603,7 +610,7 @@ const Users = (props) => {
                              }
 
 
-                            <label>Construction</label>
+                            <label>Объекты</label>
                             <AvField type='select' name="construction"  style={{ width: "100%" }}  >
                                 {props.objList.map(item =>(
                                     <option value={item.id}>{item.name}</option>
@@ -620,13 +627,13 @@ const Users = (props) => {
                             <AvField
                                 name="phone"
                                 type="text"
-                                label="Phone "
+                                label="Телефон "
                                 required
                             />
 
 
 
-                            <AvField type='select' name="position" label="Position"  style={{ width: "100%" }}  >
+                            <AvField type='select' name="position" label="Должность"  style={{ width: "100%" }}  >
                                 {props.positionList.map(item =>(
                                     <option value={item.id}>{item.name}</option>
                                 ))}
@@ -659,14 +666,14 @@ const Users = (props) => {
                             <AvField
                                 name="first_name"
                                 type="text"
-                                label="Name"
+                                label="Имя"
                                 required
                             />
 
                             <AvField
                                 name="last_name"
                                 type="text"
-                                label="Last name"
+                                label="Фамилия"
                                 required
                             />
 
@@ -674,18 +681,18 @@ const Users = (props) => {
                             <AvField
                                 name="middle_name"
                                 type="text"
-                                label="Middle name"
+                                label="Oтчество"
                                 required
                             />
 
 
-                            <AvField  onClick={() => setChecked(!checked)} type="checkbox" label="is_header"   name="is_header" />
+                            <AvField  onClick={() => setChecked(!checked)} type="checkbox" label="Бригадир"   name="is_header" />
 
 
                             {
                                 checked ? {header_worker: ''} :
 
-                                    <AvField type='select' name="header_worker" label="Header worker"       style={{ width: "100%" }}  >
+                                    <AvField type='select' name="header_worker" label="Бригадиры"       style={{ width: "100%" }}  >
                                         {props.usersList.map(item =>(
                                             <option  value={item.id}>{item.first_name} {item.last_name} {item.middle_name}</option>
                                         ))}
@@ -694,7 +701,7 @@ const Users = (props) => {
                             }
 
 
-                            <label>Construction</label>
+                            <label>Объекты</label>
                             <AvField type='select' name="construction"  style={{ width: "100%" }}  >
                                 {props.objList.map(item =>(
                                     <option value={item.id}>{item.name}</option>
@@ -710,13 +717,13 @@ const Users = (props) => {
                             <AvField
                                 name="phone"
                                 type="text"
-                                label="Phone "
+                                label="Телефон "
                                 required
                             />
 
 
 
-                            <AvField type='select' name="position" label="Position"  style={{ width: "100%" }}  >
+                            <AvField type='select' name="position" label="Должность"  style={{ width: "100%" }}  >
                                 {props.positionList.map(item =>(
                                     <option value={item.id}>{item.name}</option>
                                 ))}

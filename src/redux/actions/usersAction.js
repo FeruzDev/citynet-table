@@ -112,6 +112,23 @@ export function getUsersValue(){
 
 
 
+export function saveFile(data){
+    return function (dispatch) {
+        let image = new FormData();
+        image.append("image", data);
+
+
+        axios.put(API_PATH + "account/v1/worker-detail-update/" + data.accountId + "/", image ,{headers: {Authorization: "Bearer " + localStorage.getItem(TOKEN_NAME)}})
+            .then(res => {
+                console.log(res);
+                if (res.status === 200){
+                    dispatch(updateState({selectedImage: res.data.id}))
+                } else {
+                    toast.error("Error !!!");
+                }
+            })
+    }
+}
 
 
 export function addUsers(data) {
@@ -153,23 +170,6 @@ export function addUsers(data) {
 
 
 
-export function saveFile(data){
-    return function (dispatch) {
-        let image = new FormData();
-        image.append("image", data);
-        console.log("----------" + image)
-
-        axios.put(API_PATH + "account/v1/worker-detail-update/" + data.accountId + "/", image ,{headers: {Authorization: "Bearer " + localStorage.getItem(TOKEN_NAME)}})
-            .then(res => {
-                console.log(res);
-                if (res.status === 200){
-                    dispatch(updateState({selectedImage: res.data.id}))
-                } else {
-                    toast.error("Error !!!");
-                }
-            })
-    }
-}
 
 
 

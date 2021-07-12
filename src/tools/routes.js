@@ -8,6 +8,7 @@ export const adminPages = [
     "/tabelrep",
     "/report-table",
     "/construction",
+    "/test",
 
 ]
 

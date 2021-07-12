@@ -18,6 +18,7 @@ import Table from "./page/Table";
 import DatePicker from "./page/DataPicker";
 import Construction from "./page/Construction";
 import ReportTable from "./page/ReportTable";
+import Test2 from "./page/Test2";
 
 
 function App() {
@@ -52,6 +53,7 @@ function App() {
                 <PrivateRoute exact path='/datepicker' component={DatePicker} />
                 <PrivateRoute exact path='/tabelrep' component={TableRep} />
                 <PrivateRoute exact path='/report-table' component={ReportTable} />
+                <PrivateRoute exact path='/test' component={Test2} />
 
 
 

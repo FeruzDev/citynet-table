@@ -169,19 +169,21 @@ const Users = (props) => {
 
 
     const onEdit = (id) => {
-        console.log('Edit record number', id)
-        props.updateState({modalOpenEditAgain: !props.modalOpenEditAgain})
+        // console.log('Edit record number', id)
+        // props.updateState({modalOpenEditAgain: !props.modalOpenEditAgain})
 
         props.updateState({accountIdForEditAgain: id})
-        setuserValueObjectState({})
+        // setuserValueObjectState({})
 
         axios.get(API_PATH + "account/v1/worker-detail-update/" + id + "/", {headers: {Authorization: "Bearer " + localStorage.getItem(TOKEN_NAME)}})
             .then(res => {
-                setuserValueObjectState(res.data)
+                setuserValueObjectState(res)
+
+                props.updateState({userValueData: userValueObjectState})
                 props.updateState({modalOpenEditAgain: !props.modalOpenEditAgain})
                 // props.updateState({modalOpenEdit: !props.modalOpenEdit})
 
-                console.log(res)
+                // console.log(res)
             })
 
 
@@ -298,8 +300,10 @@ const Users = (props) => {
     }
 
 
-    const changeModalEditAgain = () => {
+    const changeModalEditAgain = (values) => {
         props.updateState({modalOpenEditAgain: !props.modalOpenEditAgain})
+
+
     }
 
 
@@ -396,6 +400,11 @@ const Users = (props) => {
 
 
     const editUsersAgain = (event, values , id) => {
+
+
+
+
+
 
 
         event.preventDefault()
@@ -559,11 +568,11 @@ const Users = (props) => {
             <Modal
             isOpen={props.modalOpenEdit}
             size='lg'
-            model={userValueObjectState}
+
             >
                 {/*<Button onClick={changeModalEdit}  className='mdi_close border-0 p-0 mr-3 mt-1'>   <CloseOutlined  style={{ fontSize: '24px' , color: "#b9b9b9"  }} />*/}
                 {/*</Button>*/}
-                <AvForm onValidSubmit={checked ? editHeaderUsers : editUsers} enctype="multipart/form-data" method="post" >
+                <AvForm onValidSubmit={checked ? editHeaderUsers : editUsers} enctype="multipart/form-data" method="post" model={userValueObjectState} >
 
                     <div className="row">
                         <div className="col-md-6">
@@ -628,7 +637,10 @@ const Users = (props) => {
                                 name="phone"
                                 type="text"
                                 label="Телефон "
+
                                 required
+                                value='+998'
+
                             />
 
 
@@ -657,8 +669,7 @@ const Users = (props) => {
             <Modal
                 isOpen={props.modalOpenEditAgain}
                 size='lg'>
-                {/*<Button onClick={changeModalEditAgain  } className='mdi_close border-0 p-0 mr-3 mt-1'>   <CloseOutlined  style={{ fontSize: '24px' , color: "#b9b9b9"  }} />*/}
-                {/*</Button>*/}
+
                 <AvForm onValidSubmit={editUsersAgain} model={userValueObjectState} >
 
                     <div className="row">
@@ -718,7 +729,9 @@ const Users = (props) => {
                                 name="phone"
                                 type="text"
                                 label="Телефон "
+
                                 required
+                                value='+998'
                             />
 
 
@@ -789,6 +802,8 @@ const Users = (props) => {
 const mapStateToProps = (state) => {
     return {
         usersList: state.usersList.usersList,
+        userValueData: state.usersList.userValueData,
+
         usersListInActive: state.usersList.usersListInActive,
         objList: state.usersList.objList,
         accountId: state.usersList.accountId,

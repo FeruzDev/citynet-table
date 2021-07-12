@@ -13,6 +13,7 @@ const initialState ={
     accountIdForEditAgain: null,
     userPosition: [],
     userValueObject: {},
+    userValueData: {},
     userConstruction: null,
     objList: [],
     selectedChildId: null,
@@ -25,6 +26,7 @@ const initialState ={
     deleteOpenModal: false,
     editOpenModal: false,
     selectedUser: {},
+
     userCheck: false,
 
 

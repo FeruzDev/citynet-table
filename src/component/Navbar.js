@@ -98,6 +98,11 @@ const Navbar = () => {
                                             <Link to='/positions'  className="nav-link"  >Должность</Link>
                                         </li>
 
+
+
+                                        <li className="nav-item">
+                                            <Link to='/test'  className="nav-link"  >TEST</Link>
+                                        </li>
                                     </>
 
 

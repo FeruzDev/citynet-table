@@ -16,11 +16,16 @@ const Attendance = (props) => {
     const {Option} = Select;
 
     const [reasonT, setReason] = useState('')
+    const [show, setShow] = useState(true);
     const reasonEvent = (value) =>{
         setReason(value)
 
 
+
+
     }
+
+
 
     const [reasonCon, setreasonContext] = useState('')
 
@@ -33,6 +38,15 @@ const Attendance = (props) => {
     }
 
 
+    const click = (value) => {
+        if(value){
+            setDis(false)
+        }
+    }
+
+
+
+    const [dis, setDis] = useState(false)
 
     const columns = [
         {
@@ -67,7 +81,10 @@ const Attendance = (props) => {
                                     filterSort={(optionA, optionB) =>
                                         optionA.children.toLowerCase().localeCompare(optionB.children.toLowerCase())
                                     }
+                                    onChange={click}
                                 >
+
+
                                     {props.objectsList.map(item => (
                                         <Option value={item.id}>{item.name}</Option>
                                     ))}
@@ -87,7 +104,7 @@ const Attendance = (props) => {
                 return (
                     <>
 
-                                <Select name="working_hours" onChange={postForm} style={{width: '80px'}}>
+                                <Select name="working_hours" onChange={postForm } style={{width: '80px'}}>
                                     <Option value={null}></Option>
                                     {props.workingHourList.map(item => (
                                         <Option value={item.hour}>{item.hour} ч</Option>
@@ -142,7 +159,7 @@ const Attendance = (props) => {
                 return (
                     <>
 
-                        <Button className="border-0  pl-1 pr-1 text-secondary" ReactNode icon={<PlusOutlined
+                        <Button className="border-0  pl-1 pr-1 text-secondary"  disabled={ dis} ReactNode icon={<PlusOutlined
                             style={{fontSize: '24px', color: "#fff", backgroundColor: "#1F7BBF"}}/>}
                                 onClick={  () => saveData(record)}/>
                     </>
@@ -168,8 +185,17 @@ const Attendance = (props) => {
     const postFormCon = (value) => {
         setconstructionSelect(value);
     }
+
+
+
     const  saveData =  async(record) => {
 
+
+
+
+
+
+        setDis(true)
 
             let arr =[];
 
@@ -181,8 +207,11 @@ const Attendance = (props) => {
                 context: reasonCon,
         })
 
-
-
+        if(  constructionSelect == '' &&  hourSelect=='' &&  reasonT=='' && reasonCon=='' ){
+           toast.warning ("Должен быть заполнить")
+            setDis(false)
+        }
+        else {
             axios.post(API_PATH + "attendance/v1/attendance-list-create/" , arr, {headers: {Authorization: "Bearer " + localStorage.getItem(TOKEN_NAME)}})
                 .then(res => {
                     toast.success("Успешно добавлен")
@@ -191,7 +220,16 @@ const Attendance = (props) => {
                     setconstructionSelect('')
                     props.getAttendanceList();
 
+                    setDis(false)
+
+
                 })
+        }
+
+        setShow(false);
+        setTimeout(() => {
+            setShow(true);
+        }, 1);
 
     }
 
@@ -210,8 +248,8 @@ const Attendance = (props) => {
                 <h2>Список рабочих</h2>
 
             </div>
-            <Table columns={columns} dataSource={props.attendanceWorkerList} size="middle"/>
-
+            {show ? <Table columns={columns} dataSource={ props.attendanceWorkerList ? props.attendanceWorkerList[0]  ?  props.attendanceWorkerList :[]: []} size="middle"/>
+             : ""}
             <ToastContainer />
         </div>
     );

@@ -142,7 +142,7 @@ const Table = (props) => {
                                                         item2.attendance.filter(el =>
                                                             el.date_created.slice(8 , 10 ) == (index + 1))[0]
                                                             ?
-                                                           <b> {item2.attendance.filter(el => el.date_created.slice(8, 10) == (index + 1))[0].working_hours}</b>
+                                                           <b> {item2.attendance.filter(el => el.date_created.slice(8, 10) == (index + 1))[0].working_hours ?  item2.attendance.filter(el => el.date_created.slice(8, 10) == (index + 1))[0].working_hours :item2.attendance.filter(el => el.date_created.slice(8, 10) == (index + 1))[0].reason_name }</b>
                                                             :
                                                             '0'
                                                         :

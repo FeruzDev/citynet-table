@@ -33,21 +33,23 @@ import {getAllUsers} from "../redux/actions/AllWorkerAction";
 
 const AllWorker = (props) => {
 
-
+    // <CaretDownOutlined />
     const columns = [
 
+        {
+            title:   "Фамилия " ,
+            dataIndex: 'last_name',
+
+            sorter: () => true   ,
+
+        },
         {
             title: 'Имя',
             dataIndex: 'first_name',
 
 
         },
-        {
-            title: 'Фамилия',
-            dataIndex: 'last_name',
 
-
-        },
         {
             title: 'Отчество',
             dataIndex: 'middle_name',
@@ -62,11 +64,14 @@ const AllWorker = (props) => {
         },
         {
             title: 'Oбъект',
-            dataIndex: 'construction_name'
+            dataIndex: 'construction_name',
+            sorter: () => true   ,
         },
         {
             title: 'Должность',
             dataIndex: 'position_name',
+            sorter: () => true   ,
+
         },
 
 
@@ -472,10 +477,42 @@ const AllWorker = (props) => {
 
 
 
+    const   handleChange = (pagination, filters, sorter) => {
+        console.log('Various parameters', pagination, filters, sorter);
+        this.setState({
+            filteredInfo: filters,
+            sortedInfo: sorter,
+        });
+    };
+
+
+   const  clearFilters = () => {
+        this.setState({ filteredInfo: null });
+    };
+
+   const clearAll = () => {
+        this.setState({
+            filteredInfo: null,
+            sortedInfo: null,
+        });
+    };
+
+   const setAgeSort = () => {
+        this.setState({
+            sortedInfo: {
+                order: 'descend',
+                columnKey: 'age',
+            },
+        });
+    };
+
+
+
 
     return (
 
-        <div className="Objects">
+
+    <div className="Objects">
 
             <div className="objectHeader">
                 <h2>Список бригад</h2>
@@ -615,6 +652,8 @@ const AllWorker = (props) => {
                                 type="text"
                                 label="Телефон "
                                 required
+                                value='+998'
+
                             />
 
 

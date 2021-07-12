@@ -158,7 +158,20 @@ export function addUsers(data) {
 
             })
             .catch(err =>{
-                toast.error("Account with this Username already exists")
+
+                if(err.response.data.username){
+                    toast.error(err.response.data.username[0]);
+
+                } if (err.response.data.password){
+                    toast.error(err.response.data.password[0]);
+
+                }
+
+
+
+
+
+
 
             })
 

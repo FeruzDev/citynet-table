@@ -14,8 +14,16 @@ export function updateState (data){
 
 
 
+
+
+
 export function getAllUsers(){
+
+
+
     return function (dispatch) {
+
+
         axios.get(API_PATH + "account/v1/all-active-workers-list/", {headers: {Authorization: "Bearer " + localStorage.getItem(TOKEN_NAME)}})
             .then(res => {
                 dispatch(updateState({allWorker: res.data}));
@@ -28,6 +36,7 @@ export function getAllUsers(){
 
 
             })
+
 
     }
 }

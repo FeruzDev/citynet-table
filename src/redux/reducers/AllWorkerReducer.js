@@ -11,6 +11,7 @@ const initialState ={
     objectsInActiveList: [],
     constructionInActiveList: [],
     objectsInActive: false,
+    forSort: false,
     selectedImage: "",
     selectedIdForDelete: null,
     selectedIdForEdit: null,
@@ -18,6 +19,7 @@ const initialState ={
     returnOpenModal: false,
     editOpenModal: false,
     editOpenModalConstruction: false,
+    forModel: {},
 
     selectedObject: {},
 

@@ -24,6 +24,8 @@ import {
 } from "../redux/actions/usersAction";
 import {Button, Select, Option, Table} from "antd";
 import DeleteOutlined from "@ant-design/icons/es/icons/DeleteOutlined";
+import CaretDownOutlined from "@ant-design/icons/es/icons/CaretDownOutlined";
+import CaretUpOutlined from "@ant-design/icons/es/icons/CaretUpOutlined";
 import FormOutlined from "@ant-design/icons/es/icons/FormOutlined";
 import CloseOutlined from "@ant-design/icons/es/icons/CloseOutlined";
 import UndoOutlined from "@ant-design/icons/es/icons/UndoOutlined";
@@ -34,24 +36,81 @@ import {getAllUsers} from "../redux/actions/AllWorkerAction";
 const AllWorker = (props) => {
 
     // <CaretDownOutlined />
+
+
+
+
+
+    const sortLastName = () =>{
+
+        props.updateState({forSort: !props.forSort});
+
+        axios.get(API_PATH + "account/v1/all-active-workers-list/?q=" +( props.forSort ? "last_name" : "-last_name"), {headers: {Authorization: "Bearer " + localStorage.getItem(TOKEN_NAME)}})
+            .then(res => {
+                props.updateState({allWorker: res.data});
+            })
+
+    }
+
+
+
+    const sortFirstName = () =>{
+
+        props.updateState({forSort: !props.forSort});
+
+        axios.get(API_PATH + "account/v1/all-active-workers-list/?q=" +( props.forSort ? "first_name" : "-first_name"), {headers: {Authorization: "Bearer " + localStorage.getItem(TOKEN_NAME)}})
+            .then(res => {
+                props.updateState({allWorker: res.data});
+            })
+
+    }
+
+
+
+    const sortMiddleName = () =>{
+
+        props.updateState({forSort: !props.forSort});
+
+        axios.get(API_PATH + "account/v1/all-active-workers-list/?q=" + (props.forSort ? "middle_name" : "-middle_name"), {headers: {Authorization: "Bearer " + localStorage.getItem(TOKEN_NAME)}})
+            .then(res => {
+                props.updateState({allWorker: res.data});
+            })
+
+    }
+
+
+
+
+    const sortPositionName = () =>{
+
+        props.updateState({forSort: !props.forSort});
+
+        axios.get(API_PATH + "account/v1/all-active-workers-list/?q=" +( props.forSort ? "position" : "-position"), {headers: {Authorization: "Bearer " + localStorage.getItem(TOKEN_NAME)}})
+            .then(res => {
+                props.updateState({allWorker: res.data});
+            })
+
+    }
+
     const columns = [
 
         {
-            title:   "Фамилия " ,
+            title:  <span className='d-flex'>Фамилия <button onClick={sortLastName} className="filter-button-style border-0 pl-2 m-0 bg-transparent d-flex align-items-center">{props.forSort ? <CaretDownOutlined />  : <CaretUpOutlined /> }</button>  </span>,
             dataIndex: 'last_name',
 
-            sorter: () => true   ,
 
         },
         {
-            title: 'Имя',
+            title:  <span className='d-flex'>Имя <button onClick={sortFirstName} className="filter-button-style border-0 pl-2 m-0 bg-transparent d-flex align-items-center">{props.forSort ? <CaretDownOutlined />  : <CaretUpOutlined /> }</button>  </span>,
+
             dataIndex: 'first_name',
 
 
         },
 
         {
-            title: 'Отчество',
+            title:  <span className="d-flex">Отчество <button onClick={sortMiddleName} className="filter-button-style border-0 bg-transparent pl-2 m-0  d-flex align-items-center">{props.forSort ? <CaretDownOutlined />  : <CaretUpOutlined /> }</button>  </span>,
+
             dataIndex: 'middle_name',
 
 
@@ -62,15 +121,17 @@ const AllWorker = (props) => {
             dataIndex: 'phone',
 
         },
+        // {
+        //     title: 'Oбъект',
+        //     dataIndex: 'construction_name',
+        //     sorter: () => true   ,
+        // },
         {
-            title: 'Oбъект',
-            dataIndex: 'construction_name',
-            sorter: () => true   ,
-        },
-        {
-            title: 'Должность',
+            title:  <span className="d-flex"><span>Должность</span> <button onClick={sortPositionName} className="filter-button-style border-0 pl-2 m-0 bg-transparent d-flex align-items-center">{props.forSort ? <CaretDownOutlined />  : <CaretUpOutlined /> }</button>  </span>,
+
+
             dataIndex: 'position_name',
-            sorter: () => true   ,
+
 
         },
 
@@ -86,7 +147,7 @@ const AllWorker = (props) => {
                         {/*<button type="primary" onClick={onEdit(record.id:number)}>edit</button>*/}
 
 
-                        <Button className="border-0  pl-1 pr-1 text-secondary" ReactNode icon={<FormOutlined style={{ fontSize: '24px'  }}/>} onClick={()=> onEdit(record.id)} />
+                        <Button className="border-0  pl-1 pr-1 text-secondary" ReactNode icon={<FormOutlined style={{ fontSize: '24px'  }}/>} onClick={()=> onEdit(record)} />
 
                         <Button className="border-0 ml-3  pl-1 pr-1 text-secondary" ReactNode icon={<DeleteOutlined style={{ fontSize: '24px'   }}/>}  onClick={()  => onDelete(record.id)} />
 
@@ -125,10 +186,7 @@ const AllWorker = (props) => {
             //     multiple: 3,
             // },
         },
-        {
-            title: 'Oбъект',
-            dataIndex: 'construction_name'
-        },
+
         {
             title: 'Должность',
             dataIndex: 'position_name',
@@ -144,11 +202,11 @@ const AllWorker = (props) => {
                         {/*<button type="primary" onClick={onEdit(record.id:number)}>edit</button>*/}
 
 
-                        <Button className="border-0  pl-1 pr-1 text-secondary" ReactNode icon={<FormOutlined style={{ fontSize: '24px'  }}/>} onClick={(): void => onEdit(record.id)} />
+                        <Button className="border-0  pl-1 pr-1 text-secondary" ReactNode icon={<FormOutlined style={{ fontSize: '24px'  }}/>} onClick={()  => onEdit(record)} />
 
 
 
-                        <Button className="border-0 ml-3  pl-1 pr-1 text-success" ReactNode icon={<UndoOutlined style={{ fontSize: '24px'   }}/>}  onClick={(): void => onReturn(record.id)} />
+                        <Button className="border-0 ml-3  pl-1 pr-1 text-success" ReactNode icon={<UndoOutlined style={{ fontSize: '24px'   }}/>}  onClick={()  => onReturn(record.id)} />
                     </>
                 )
             }
@@ -172,21 +230,20 @@ const AllWorker = (props) => {
     }
 
 
+    const [foredit, setforedit] = useState({})
 
-    const onEdit = (id) => {
+    const onEdit = (record) => {
 
-        props.updateState({accountIdForEditAgain: id})
+        props.updateState({accountIdForEditAgain: record.id})
 
+
+        axios.get(API_PATH + "account/v1/worker-detail-update/" + record.id + "/", {headers: {Authorization: "Bearer " + localStorage.getItem(TOKEN_NAME)}})
+            .then(res => {
+                props.updateState({forModel: record})
+                // props.updateState({modalOpenEditAgain: !props.modalOpenEditAgain})
+
+            })
         changeModalEditAgain()
-        // axios.get(API_PATH + "account/v1/worker-detail-update/" + id + "/", {headers: {Authorization: "Bearer " + localStorage.getItem(TOKEN_NAME)}})
-        //     .then(res => {
-        //         setuserValueObjectState(res.data)
-        //         props.updateState({modalOpenEditAgain: !props.modalOpenEditAgain})
-        //         // props.updateState({modalOpenEdit: !props.modalOpenEdit})
-        //
-        //     })
-        //
-
 
 
     }
@@ -295,7 +352,11 @@ const AllWorker = (props) => {
 
 
     const changeModalEditAgain = () => {
+
+        props.updateState({forModel: {}})
         props.updateState({modalOpenEditAgain: !props.modalOpenEditAgain})
+
+
     }
 
 
@@ -304,6 +365,7 @@ const AllWorker = (props) => {
     const saveUsers = (event, values) => {
         props.addUsers({...values});
     }
+
 
 
 
@@ -331,7 +393,7 @@ const AllWorker = (props) => {
 
 
         data2.append("children.phone", event.target.phone.value)
-        data2.append("construction", event.target.construction.value)
+        // data2.append("construction", event.target.construction.value)
         data2.append("position", event.target.position.value)
         data2.append("phone", event.target.phone.value)
         data2.append("image", imagefile.files[0])
@@ -367,7 +429,7 @@ const AllWorker = (props) => {
         data2.append("middle_name", event.target.middle_name.value)
         data2.append("is_header", event.target.is_header.value)
         data2.append("children.phone", event.target.phone.value)
-        data2.append("construction", event.target.construction.value)
+        // data2.append("construction", event.target.construction.value)
         data2.append("position", event.target.position.value)
         data2.append("phone", event.target.phone.value)
         data2.append("image", imagefile.files[0])
@@ -379,6 +441,7 @@ const AllWorker = (props) => {
                 console.log(res)
                 props.getUsers()
 
+                props.getAllUsers()
                 setChecked(!checked)
             })
 
@@ -406,7 +469,7 @@ const AllWorker = (props) => {
 
         data2.append("header_worker", event.target.header_worker.value)
         data2.append("children.phone", event.target.phone.value)
-        data2.append("construction", event.target.construction.value)
+        // data2.append("construction", event.target.construction.value)
         data2.append("position", event.target.position.value)
         data2.append("phone", event.target.phone.value)
         data2.append("image", imagefile.files[0])
@@ -486,18 +549,18 @@ const AllWorker = (props) => {
     };
 
 
-   const  clearFilters = () => {
+    const  clearFilters = () => {
         this.setState({ filteredInfo: null });
     };
 
-   const clearAll = () => {
+    const clearAll = () => {
         this.setState({
             filteredInfo: null,
             sortedInfo: null,
         });
     };
 
-   const setAgeSort = () => {
+    const setAgeSort = () => {
         this.setState({
             sortedInfo: {
                 order: 'descend',
@@ -512,7 +575,7 @@ const AllWorker = (props) => {
     return (
 
 
-    <div className="Objects">
+        <div className="Objects">
 
             <div className="objectHeader">
                 <h2>Список бригад</h2>
@@ -582,7 +645,7 @@ const AllWorker = (props) => {
             <Modal
                 isOpen={props.modalOpenEdit}
                 size='lg'
-                model={userValueObjectState}
+
             >
                 {/*<Button onClick={changeModalEdit}  className='mdi_close border-0 p-0 mr-3 mt-1'>   <CloseOutlined  style={{ fontSize: '24px' , color: "#b9b9b9"  }} />*/}
                 {/*</Button>*/}
@@ -633,12 +696,12 @@ const AllWorker = (props) => {
                             }
 
 
-                            <label>Объектa</label>
-                            <AvField type='select' name="construction"  style={{ width: "100%" }}  >
-                                {props.objList.map(item =>(
-                                    <option value={item.id}>{item.name}</option>
-                                ))}
-                            </AvField>
+                            {/*<label>Объектa</label>*/}
+                            {/*<AvField type='select' name="construction"  style={{ width: "100%" }}  >*/}
+                            {/*    {props.objList.map(item =>(*/}
+                            {/*        <option value={item.id}>{item.name}</option>*/}
+                            {/*    ))}*/}
+                            {/*</AvField>*/}
 
 
 
@@ -667,8 +730,10 @@ const AllWorker = (props) => {
                             <input type="file"
                                    id="file"
                                    required
-                                   className="form-control"/>
-                            
+
+                                   // className="form-control"
+                            />
+
 
                         </div>
                     </div>
@@ -683,27 +748,29 @@ const AllWorker = (props) => {
 
             <Modal
                 isOpen={props.modalOpenEditAgain}
-                size='lg'>
+                size='lg' toggle={() =>changeModalEditAgain}>
                 {/*<Button onClick={changeModalEditAgain  } className='mdi_close border-0 p-0 mr-3 mt-1'>   <CloseOutlined  style={{ fontSize: '24px' , color: "#b9b9b9"  }} />*/}
                 {/*</Button>*/}
 
-
-
-                <AvForm onValidSubmit={editUsersAgain} model={userValueObjectState} >
+                <AvForm onValidSubmit={editUsersAgain} model={props.forModel} >
 
                     <div className="row">
                         <div className="col-md-6">
                             <AvField
                                 name="first_name"
                                 type="text"
-                                label="Name"
+                                label="Имя"
+
+                                value={props.forModel.first_name}
                                 required
                             />
 
                             <AvField
                                 name="last_name"
                                 type="text"
-                                label="Last name"
+                                label="Фамилия"
+                                value={props.forModel.last_name}
+
                                 required
                             />
 
@@ -711,18 +778,23 @@ const AllWorker = (props) => {
                             <AvField
                                 name="middle_name"
                                 type="text"
-                                label="Middle name"
+                                label="Oтчество"
+                                value={props.forModel.middle_name}
+
                                 required
                             />
 
 
-                            <AvField  onClick={() =>  alert('rear')} value={checked} type="checkbox" label="is_header"   name="is_header" />
+                            <AvField  onClick={() =>  alert('rear')} value={checked} type="checkbox" label="Бригадир"   name="is_header" />
 
 
                             {
                                 checked ? {header_worker: ''} :
 
-                                    <AvField type='select' name="header_worker" label="Header worker"       style={{ width: "100%" }}  >
+                                    <AvField type='select' name="header_worker"
+                                             value={props.forModel.header_worker}
+                                             label="Бригадa"
+                                             style={{ width: "100%" }}  >
                                         {props.usersList.map(item =>(
                                             <option  value={item.id}>{item.first_name} {item.last_name} {item.middle_name}</option>
                                         ))}
@@ -731,12 +803,12 @@ const AllWorker = (props) => {
                             }
 
 
-                            <label>Construction</label>
-                            <AvField type='select' name="construction"  style={{ width: "100%" }}  >
-                                {props.objList.map(item =>(
-                                    <option value={item.id}>{item.name}</option>
-                                ))}
-                            </AvField>
+                            {/*<label>Construction</label>*/}
+                            {/*<AvField type='select' name="construction"  style={{ width: "100%" }}  >*/}
+                            {/*    {props.objList.map(item =>(*/}
+                            {/*        <option value={item.id}>{item.name}</option>*/}
+                            {/*    ))}*/}
+                            {/*</AvField>*/}
 
 
 
@@ -747,24 +819,28 @@ const AllWorker = (props) => {
                             <AvField
                                 name="phone"
                                 type="text"
-                                label="Phone "
+                                label="Телефон "
+                                value={props.forModel.phone}
+
                                 required
                             />
 
 
 
-                            <AvField type='select' name="position" label="Position"  style={{ width: "100%" }}  >
+                            <AvField type='select' name="position" label="Должность"
+                                     value={props.forModel.position}
+                                     style={{ width: "100%" }}  >
                                 {props.positionList.map(item =>(
                                     <option value={item.id}>{item.name}</option>
                                 ))}
                             </AvField>
 
 
-                            <AvField
+                            <input
                                 name="image"
                                 type="file"
                                 id="file"
-                                label="Profile image "
+
                                 required
                             />
 
@@ -840,6 +916,8 @@ const mapStateToProps = (state) => {
         userCheck: state.objectsList.userCheck,
         positionList: state.positionList.positionList,
         allWorker: state.allWorker.allWorker,
+        forModel: state.allWorker.forModel,
+        forSort: state.allWorker.forSort,
     }
 }
 export default connect(mapStateToProps,{getUsers,getPosition,getAllUsers, getObjectsForItem,saveFile, getUsersInActive,  getUsersPosition, updateState, addUsers, editUsers})(AllWorker);

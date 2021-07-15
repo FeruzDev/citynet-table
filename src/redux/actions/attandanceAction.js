@@ -19,8 +19,11 @@ export function getAttendanceList(){
         axios.get(API_PATH + "account/v1/self-workers-list/", {headers: {Authorization: "Bearer " + localStorage.getItem(TOKEN_NAME)}})
             .then(res => {
                 dispatch(updateState({attendanceWorkerList: res.data}));
-                dispatch({type: "CHANGE_LOADING", payload: {pageLoading: false}})
+
+
+                // dispatch({type: "CHANGE_LOADING", payload: {pageLoading: false}})
             })
+
 
     }
 }

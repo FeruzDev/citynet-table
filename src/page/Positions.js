@@ -60,6 +60,10 @@ const Positions = (props) => {
 
     const columnsForRemove = [
         {
+            title: '#',
+            dataIndex: 'key',
+        },
+        {
             title: 'Название  ',
             dataIndex: 'name',
         },

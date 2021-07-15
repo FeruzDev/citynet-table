@@ -60,23 +60,27 @@ const Table = (props) => {
 
 
     return (
-        <div className="Table">
+        <div className="Table  ">
 
-            <div className="tableHeader mb-4 mt-3">
-
-
-                <Space direction="horizontal">
-
-                    <DatePicker onChange={() => getDatePicker} picker="month" />
+            <div className="tableHeader     ">
 
 
-                </Space>
+                    <h2>Ежемесячный табель</h2>
+
+
+                {/*<Space direction="horizontal">*/}
+
+                {/*    <DatePicker onChange={() => getDatePicker} picker="month" />*/}
+
+
+                {/*</Space>*/}
             </div>
 
 
-            <table className='tableList mt-5'>
+            <table className='tableList '>
 
                 <tr>
+                    <th>№</th>
                     <th>FIO</th>
                     <th>Должность</th>
                     {
@@ -100,9 +104,10 @@ const Table = (props) => {
 
                         < >
                             <tr>
+                               <th></th>
 
                                 <th>{item.get_full_name}</th>
-                                <th>Staff</th>
+                                <th>Бригадир</th>
 
                                 {
                                     allDays.map(all =>(
@@ -125,6 +130,8 @@ const Table = (props) => {
                                     <tr>
 
 
+                                        <td className='text-center'><b>{i2+1}</b></td>
+
                                         <td>{item2.get_full_name}</td>
                                         <td>{item2.position_name}  </td>
 
@@ -137,12 +144,12 @@ const Table = (props) => {
 
                                                  <td>
 
-                                                    { item2.attendance[i2]
+                                                    { item2.attendance[i]
                                                         ?
                                                         item2.attendance.filter(el =>
                                                             el.date_created.slice(8 , 10 ) == (index + 1))[0]
                                                             ?
-                                                           <b> {item2.attendance.filter(el => el.date_created.slice(8, 10) == (index + 1))[0].working_hours ?  item2.attendance.filter(el => el.date_created.slice(8, 10) == (index + 1))[0].working_hours :item2.attendance.filter(el => el.date_created.slice(8, 10) == (index + 1))[0].reason_name }</b>
+                                                           <b> {item2.attendance.filter(el => el.date_created.slice(8, 10) == (index + 1))[0].working_hours ?  item2.attendance.filter(el => el.date_created.slice(8, 10) == (index + 1))[0].working_hours :item2.attendance.filter(el => el.date_created.slice(8, 10) == (index + 1))[0].short_name }</b>
                                                             :
                                                             '0'
                                                         :
@@ -155,7 +162,7 @@ const Table = (props) => {
                                         }
 
                                         <td>
-                                            {item2.total} ч
+                                           <b> {item2.total} ч</b>
                                         </td>
 
 

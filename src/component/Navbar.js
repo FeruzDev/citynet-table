@@ -100,9 +100,9 @@ const Navbar = () => {
 
 
 
-                                        <li className="nav-item">
-                                            <Link to='/test'  className="nav-link"  >TEST</Link>
-                                        </li>
+                                        {/*<li className="nav-item">*/}
+                                        {/*    <Link to='/test'  className="nav-link"  >TEST</Link>*/}
+                                        {/*</li>*/}
                                     </>
 
 

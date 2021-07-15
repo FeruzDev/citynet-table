@@ -26,7 +26,7 @@ const initialState ={
     deleteOpenModal: false,
     editOpenModal: false,
     selectedUser: {},
-
+    forSort: false,
     userCheck: false,
 
 

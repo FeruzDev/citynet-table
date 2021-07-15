@@ -6,7 +6,8 @@ import {ToastContainer} from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 import { EditOutlined, LoadingOutlined } from '@ant-design/icons'
 import MinusCircleOutlined from "@ant-design/icons/es/icons/MinusCircleOutlined";
-
+import CaretDownOutlined from "@ant-design/icons/es/icons/CaretDownOutlined";
+import CaretUpOutlined from "@ant-design/icons/es/icons/CaretUpOutlined";
 import axios from "axios";
 import {API_PATH, TOKEN_NAME} from "../tools/constants";
 import {
@@ -29,23 +30,83 @@ import {getPosition} from "../redux/actions/positionAction";
 const Users = (props) => {
 
 
+
+
+
+
+    const sortLastName = () =>{
+
+        props.updateState({forSort: !props.forSort});
+
+        axios.get(API_PATH + "account/v1/worker-list/?q=" +( props.forSort ? "last_name" : "-last_name"), {headers: {Authorization: "Bearer " + localStorage.getItem(TOKEN_NAME)}})
+            .then(res => {
+                props.updateState({usersList: res.data});
+            })
+
+    }
+
+
+
+    const sortFirstName = () =>{
+
+        props.updateState({forSort: !props.forSort});
+
+        axios.get(API_PATH + "account/v1/worker-list/?q=" +( props.forSort ? "first_name" : "-first_name"), {headers: {Authorization: "Bearer " + localStorage.getItem(TOKEN_NAME)}})
+            .then(res => {
+                props.updateState({usersList: res.data});
+            })
+
+    }
+
+
+
+    const sortMiddleName = () =>{
+
+        props.updateState({forSort: !props.forSort});
+
+        axios.get(API_PATH + "account/v1/worker-list/?q=" + (props.forSort ? "middle_name" : "-middle_name"), {headers: {Authorization: "Bearer " + localStorage.getItem(TOKEN_NAME)}})
+            .then(res => {
+                props.updateState({usersList: res.data});
+            })
+
+    }
+
+
+
+
+    const sortPositionName = () =>{
+
+        props.updateState({forSort: !props.forSort});
+
+        axios.get(API_PATH + "account/v1/worker-list/?q=" +( props.forSort ? "position" : "-position"), {headers: {Authorization: "Bearer " + localStorage.getItem(TOKEN_NAME)}})
+            .then(res => {
+                props.updateState({usersList: res.data});
+            })
+
+    }
+
+
+
     const columns = [
 
 
         {
-            title: 'Фамилия',
+            title:  <span className='d-flex'>Фамилия <button onClick={sortLastName} className="filter-button-style border-0 pl-2 m-0 bg-transparent d-flex align-items-center">{props.forSort ? <CaretDownOutlined />  : <CaretUpOutlined /> }</button>  </span>,
+
             dataIndex: 'last_name',
 
 
         },
         {
-            title: 'Имя',
+            title:  <span className='d-flex'>Имя <button onClick={sortFirstName} className="filter-button-style border-0 pl-2 m-0 bg-transparent d-flex align-items-center">{props.forSort ? <CaretDownOutlined />  : <CaretUpOutlined /> }</button>  </span>,
+
             dataIndex: 'first_name',
 
 
         },
         {
-            title: 'Отчество',
+            title:  <span className="d-flex">Отчество <button onClick={sortMiddleName} className="filter-button-style border-0 bg-transparent pl-2 m-0  d-flex align-items-center">{props.forSort ? <CaretDownOutlined />  : <CaretUpOutlined /> }</button>  </span>,
+
             dataIndex: 'middle_name',
 
 
@@ -59,12 +120,13 @@ const Users = (props) => {
             //     multiple: 3,
             // },
         },
+        // {
+        //     title: 'Oбъект',
+        //     dataIndex: 'construction_name'
+        // },
         {
-            title: 'Oбъект',
-            dataIndex: 'construction_name'
-        },
-        {
-            title: 'Должность',
+            title:  <span className="d-flex"><span>Должность</span> <button onClick={sortPositionName} className="filter-button-style border-0 pl-2 m-0 bg-transparent d-flex align-items-center">{props.forSort ? <CaretDownOutlined />  : <CaretUpOutlined /> }</button>  </span>,
+
             dataIndex: 'position_name',
         },
 
@@ -80,7 +142,7 @@ const Users = (props) => {
                         {/*<button type="primary" onClick={onEdit(record.id:number)}>edit</button>*/}
 
 
-                        <Button className="border-0  pl-1 pr-1 text-secondary" ReactNode icon={<FormOutlined style={{ fontSize: '24px'  }}/>} onClick={() => onEdit(record.id)} />
+                        <Button className="border-0  pl-1 pr-1 text-secondary" ReactNode icon={<FormOutlined style={{ fontSize: '24px'  }}/>} onClick={() => onEdit(record)} />
 
                         <Button className="border-0 ml-3  pl-1 pr-1 text-secondary" ReactNode icon={<DeleteOutlined style={{ fontSize: '24px'   }}/>}  onClick={()  => onDelete(record.id)} />
 
@@ -120,10 +182,10 @@ const Users = (props) => {
             //     multiple: 3,
             // },
         },
-        {
-            title: 'Oбъект',
-            dataIndex: 'construction_name'
-        },
+        // {
+        //     title: 'Oбъект',
+        //     dataIndex: 'construction_name'
+        // },
         {
             title: 'Должность',
             dataIndex: 'position_name',
@@ -168,25 +230,18 @@ const Users = (props) => {
 
 
 
-    const onEdit = (id) => {
-        // console.log('Edit record number', id)
-        // props.updateState({modalOpenEditAgain: !props.modalOpenEditAgain})
+    const onEdit = (record) => {
 
-        props.updateState({accountIdForEditAgain: id})
-        // setuserValueObjectState({})
+        props.updateState({accountIdForEditAgain: record.id})
 
-        axios.get(API_PATH + "account/v1/worker-detail-update/" + id + "/", {headers: {Authorization: "Bearer " + localStorage.getItem(TOKEN_NAME)}})
+
+        axios.get(API_PATH + "account/v1/worker-detail-update/" + record.id + "/", {headers: {Authorization: "Bearer " + localStorage.getItem(TOKEN_NAME)}})
             .then(res => {
-                setuserValueObjectState(res)
+                props.updateState({userValueData: record})
+                // props.updateState({modalOpenEditAgain: !props.modalOpenEditAgain})
 
-                props.updateState({userValueData: userValueObjectState})
-                props.updateState({modalOpenEditAgain: !props.modalOpenEditAgain})
-                // props.updateState({modalOpenEdit: !props.modalOpenEdit})
-
-                // console.log(res)
             })
-
-
+        changeModalEditAgain()
 
 
     }
@@ -300,7 +355,9 @@ const Users = (props) => {
     }
 
 
-    const changeModalEditAgain = (values) => {
+    const changeModalEditAgain = () => {
+
+        props.updateState({userValueData: {}})
         props.updateState({modalOpenEditAgain: !props.modalOpenEditAgain})
 
 
@@ -338,7 +395,7 @@ const Users = (props) => {
 
 
         data2.append("children.phone", event.target.phone.value)
-        data2.append("construction", event.target.construction.value)
+        // data2.append("construction", event.target.construction.value)
         data2.append("position", event.target.position.value)
         data2.append("phone", event.target.phone.value)
         data2.append("image", imagefile.files[0])
@@ -375,7 +432,7 @@ const Users = (props) => {
 
 
         data2.append("children.phone", event.target.phone.value)
-        data2.append("construction", event.target.construction.value)
+        // data2.append("construction", event.target.construction.value)
         data2.append("position", event.target.position.value)
         data2.append("phone", event.target.phone.value)
         data2.append("image", imagefile.files[0])
@@ -418,7 +475,7 @@ const Users = (props) => {
 
         data2.append("header_worker", event.target.header_worker.value)
         data2.append("children.phone", event.target.phone.value)
-        data2.append("construction", event.target.construction.value)
+        // data2.append("construction", event.target.construction.value)
         data2.append("position", event.target.position.value)
         data2.append("phone", event.target.phone.value)
         data2.append("image", imagefile.files[0])
@@ -572,7 +629,7 @@ const Users = (props) => {
             >
                 {/*<Button onClick={changeModalEdit}  className='mdi_close border-0 p-0 mr-3 mt-1'>   <CloseOutlined  style={{ fontSize: '24px' , color: "#b9b9b9"  }} />*/}
                 {/*</Button>*/}
-                <AvForm onValidSubmit={checked ? editHeaderUsers : editUsers} enctype="multipart/form-data" method="post" model={userValueObjectState} >
+                <AvForm onValidSubmit={checked ? editHeaderUsers : editUsers} enctype="multipart/form-data" method="post" model={props.userValueData} >
 
                     <div className="row">
                         <div className="col-md-6">
@@ -619,12 +676,12 @@ const Users = (props) => {
                              }
 
 
-                            <label>Объекты</label>
-                            <AvField type='select' name="construction"  style={{ width: "100%" }}  >
-                                {props.objList.map(item =>(
-                                    <option value={item.id}>{item.name}</option>
-                                ))}
-                            </AvField>
+                            {/*<label>Объекты</label>*/}
+                            {/*<AvField type='select' name="construction"  style={{ width: "100%" }}  >*/}
+                            {/*    {props.objList.map(item =>(*/}
+                            {/*        <option value={item.id}>{item.name}</option>*/}
+                            {/*    ))}*/}
+                            {/*</AvField>*/}
 
 
 
@@ -670,7 +727,7 @@ const Users = (props) => {
                 isOpen={props.modalOpenEditAgain}
                 size='lg'>
 
-                <AvForm onValidSubmit={editUsersAgain} model={userValueObjectState} >
+                <AvForm onValidSubmit={editUsersAgain} model={props.userValueData} >
 
                     <div className="row">
                         <div className="col-md-6">
@@ -678,12 +735,16 @@ const Users = (props) => {
                                 name="first_name"
                                 type="text"
                                 label="Имя"
+                                value={props.userValueData.first_name}
+
                                 required
                             />
 
                             <AvField
                                 name="last_name"
                                 type="text"
+                                value={props.userValueData.last_name}
+
                                 label="Фамилия"
                                 required
                             />
@@ -692,6 +753,8 @@ const Users = (props) => {
                             <AvField
                                 name="middle_name"
                                 type="text"
+                                value={props.userValueData.middle_name}
+
                                 label="Oтчество"
                                 required
                             />
@@ -703,7 +766,12 @@ const Users = (props) => {
                             {
                                 checked ? {header_worker: ''} :
 
-                                    <AvField type='select' name="header_worker" label="Бригадиры"       style={{ width: "100%" }}  >
+                                    <AvField type='select'
+                                             name="header_worker"
+                                             label="Бригадиры"
+                                             value={props.userValueData.header_worker}
+
+                                             style={{ width: "100%" }}  >
                                         {props.usersList.map(item =>(
                                             <option  value={item.id}>{item.first_name} {item.last_name} {item.middle_name}</option>
                                         ))}
@@ -712,12 +780,12 @@ const Users = (props) => {
                             }
 
 
-                            <label>Объекты</label>
-                            <AvField type='select' name="construction"  style={{ width: "100%" }}  >
-                                {props.objList.map(item =>(
-                                    <option value={item.id}>{item.name}</option>
-                                ))}
-                            </AvField>
+                            {/*<label>Объекты</label>*/}
+                            {/*<AvField type='select' name="construction"  style={{ width: "100%" }}  >*/}
+                            {/*    {props.objList.map(item =>(*/}
+                            {/*        <option value={item.id}>{item.name}</option>*/}
+                            {/*    ))}*/}
+                            {/*</AvField>*/}
 
 
 
@@ -729,14 +797,20 @@ const Users = (props) => {
                                 name="phone"
                                 type="text"
                                 label="Телефон "
+                                value={props.userValueData.phone}
 
                                 required
-                                value='+998'
+                                // value='+998'
                             />
 
 
 
-                            <AvField type='select' name="position" label="Должность"  style={{ width: "100%" }}  >
+                            <AvField type='select'
+                                     name="position"
+                                     label="Должность"
+                                     value={props.userValueData.position}
+
+                                     style={{ width: "100%" }}  >
                                 {props.positionList.map(item =>(
                                     <option value={item.id}>{item.name}</option>
                                 ))}
@@ -811,6 +885,7 @@ const mapStateToProps = (state) => {
         userPosition: state.usersList.userPosition,
         accountIdForEdit: state.usersList.accountIdForEdit,
         usersListAccount: state.usersList.usersListAccount,
+        forSort: state.usersList.forSort,
         userValueObject: state.usersList.userValueObject,
         usersInActive: state.usersList.usersInActive,
         accountIdForEditAgain: state.usersList.accountIdForEditAgain,

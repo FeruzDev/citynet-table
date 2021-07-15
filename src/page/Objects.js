@@ -18,15 +18,41 @@ import {API_PATH, TOKEN_NAME} from "../tools/constants";
 import {Button, Switch, Table, Menu, Dropdown, message} from 'antd';
 import DeleteOutlined from "@ant-design/icons/es/icons/DeleteOutlined";
 import FormOutlined from "@ant-design/icons/es/icons/FormOutlined";
+import CaretDownOutlined from "@ant-design/icons/es/icons/CaretDownOutlined";
+import CaretUpOutlined from "@ant-design/icons/es/icons/CaretUpOutlined";
 import UndoOutlined from "@ant-design/icons/es/icons/UndoOutlined";
 import DownOutlined from "@ant-design/icons/es/icons/DownOutlined";
 
 
 const Objects = (props) => {
 
+
+
+
+
+
+
+
+
+    const sortObjectName = () =>{
+
+        props.updateState({forSort: !props.forSort});
+
+        axios.get(API_PATH + "construction/v1/construction-list-active/?q=" +( props.forSort ? "name" : "-name"), {headers: {Authorization: "Bearer " + localStorage.getItem(TOKEN_NAME)}})
+            .then(res => {
+                props.updateState({objectsList: res.data});
+
+            })
+
+    }
+
+
+
+
     const columns = [
         {
-            title: 'Название объекта',
+            title:  <span className='d-flex'>Название блокa <button onClick={sortObjectName} className="filter-button-style border-0 pl-2 m-0 bg-transparent d-flex align-items-center">{props.forSort ? <CaretDownOutlined />  : <CaretUpOutlined /> }</button>  </span>,
+
             dataIndex: 'name',
         },
 
@@ -414,6 +440,7 @@ const mapStateToProps = (state) => {
         selectedIdForDelete: state.objectsList.selectedIdForDelete,
         selectedIdForEdit: state.objectsList.selectedIdForEdit,
         deleteObject: state.objectsList.deleteObject,
+        forSort: state.objectsList.forSort,
         selectedObject: state.objectsList.selectedObject,
     }
 }

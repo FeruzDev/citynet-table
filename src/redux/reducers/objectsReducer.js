@@ -14,6 +14,7 @@ const initialState ={
     deleteOpenModal: false,
     returnOpenModal: false,
     editOpenModal: false,
+    forSort: false,
     editOpenModalConstruction: false,
 
     selectedObject: {},

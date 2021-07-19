@@ -157,6 +157,18 @@ const AllWorker = (props) => {
         },
     ];
 
+
+
+
+
+
+    const [imgRemoveItem , setimgRemove] = useState(false)
+    const imgRemove = () => {
+        document.getElementById("profileImg").style.display = "none"
+        setimgRemove(!imgRemoveItem)
+
+    }
+
     const columnsForRemove = [
 
         {
@@ -235,6 +247,8 @@ const AllWorker = (props) => {
     const onEdit = (record) => {
 
         props.updateState({accountIdForEditAgain: record.id})
+        setChecked(record.is_header)
+
 
 
         axios.get(API_PATH + "account/v1/worker-detail-update/" + record.id + "/", {headers: {Authorization: "Bearer " + localStorage.getItem(TOKEN_NAME)}})
@@ -458,6 +472,7 @@ const AllWorker = (props) => {
     const editUsersAgain = (event, values , id) => {
 
 
+
         event.preventDefault()
         let data2 = new FormData();
         let imagefile = document.querySelector('#file');
@@ -467,12 +482,16 @@ const AllWorker = (props) => {
         data2.append("middle_name", event.target.middle_name.value)
         data2.append("is_header", event.target.is_header.value)
 
-        data2.append("header_worker", event.target.header_worker.value)
+
+        checked ? console.log("is header")  :     (    data2.append("header_worker", event.target.header_worker.value))
+
         data2.append("children.phone", event.target.phone.value)
         // data2.append("construction", event.target.construction.value)
         data2.append("position", event.target.position.value)
         data2.append("phone", event.target.phone.value)
-        data2.append("image", imagefile.files[0])
+
+
+        imgRemoveItem ?     data2.append("image", imagefile.files[0]) : console.log("don't select img")
 
 
 
@@ -727,9 +746,11 @@ const AllWorker = (props) => {
                                 ))}
                             </AvField>
 
-                            <input type="file"
+                            <AvField type="file"
                                    id="file"
                                    required
+                                     name
+
 
                                    // className="form-control"
                             />
@@ -749,8 +770,6 @@ const AllWorker = (props) => {
             <Modal
                 isOpen={props.modalOpenEditAgain}
                 size='lg' toggle={() =>changeModalEditAgain}>
-                {/*<Button onClick={changeModalEditAgain  } className='mdi_close border-0 p-0 mr-3 mt-1'>   <CloseOutlined  style={{ fontSize: '24px' , color: "#b9b9b9"  }} />*/}
-                {/*</Button>*/}
 
                 <AvForm onValidSubmit={editUsersAgain} model={props.forModel} >
 
@@ -760,7 +779,6 @@ const AllWorker = (props) => {
                                 name="first_name"
                                 type="text"
                                 label="Имя"
-
                                 value={props.forModel.first_name}
                                 required
                             />
@@ -785,11 +803,12 @@ const AllWorker = (props) => {
                             />
 
 
-                            <AvField  onClick={() =>  alert('rear')} value={checked} type="checkbox" label="Бригадир"   name="is_header" />
+
+                            <AvField   checked={props.forModel.is_header  ? true : false} onChange={() => setChecked(!checked)} type="checkbox" label="Бригадир"   name="is_header" />
 
 
                             {
-                                checked ? {header_worker: ''} :
+                                checked ? '' :
 
                                     <AvField type='select' name="header_worker"
                                              value={props.forModel.header_worker}
@@ -803,12 +822,26 @@ const AllWorker = (props) => {
                             }
 
 
-                            {/*<label>Construction</label>*/}
-                            {/*<AvField type='select' name="construction"  style={{ width: "100%" }}  >*/}
-                            {/*    {props.objList.map(item =>(*/}
-                            {/*        <option value={item.id}>{item.name}</option>*/}
-                            {/*    ))}*/}
-                            {/*</AvField>*/}
+
+
+                            {/*<AvField   value={checked} type="checkbox" label="Бригадир"   name="is_header" />*/}
+
+
+                            {/*{*/}
+                            {/*    checked ? {header_worker: ''} :*/}
+
+                            {/*        <AvField type='select' name="header_worker"*/}
+                            {/*                 value={props.forModel.header_worker}*/}
+                            {/*                 label="Бригадa"*/}
+                            {/*                 style={{ width: "100%" }}  >*/}
+                            {/*            {props.usersList.map(item =>(*/}
+                            {/*                <option  value={item.id}>{item.first_name} {item.last_name} {item.middle_name}</option>*/}
+                            {/*            ))}*/}
+                            {/*        </AvField>*/}
+
+                            {/*}*/}
+
+
 
 
 
@@ -836,19 +869,23 @@ const AllWorker = (props) => {
                             </AvField>
 
 
-                            <input
+                            <AvField
                                 name="image"
                                 type="file"
                                 id="file"
 
-                                required
+                                onChange={imgRemove}
+                                // required
                             />
+
+                            <img src={props.forModel.image}  id='profileImg' className="profile-img"/>
+
 
                         </div>
                     </div>
 
 
-                    <button className="btn formAddButton  "  >Добавить</button>
+                    <button className="btn formAddButton  "  >Сохарнить</button>
 
                     <button className="btn  formCancel   " onClick={changeModalEditAgain}  >Отмена</button>
 

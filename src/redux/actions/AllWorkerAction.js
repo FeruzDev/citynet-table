@@ -18,9 +18,6 @@ export function updateState (data){
 
 
 export function getAllUsers(){
-
-
-
     return function (dispatch) {
 
 
@@ -29,9 +26,6 @@ export function getAllUsers(){
                 dispatch(updateState({allWorker: res.data}));
                 // dispatch(updateState({userPosition: res.data.position}));
                 dispatch(updateState({userConstruction: res.data.construction}));
-
-
-
                 dispatch({type: "CHANGE_LOADING", payload: {pageLoading: false}})
 
 
@@ -48,7 +42,6 @@ export function editUsers(data, props) {
 
         axios.put(API_PATH + "account/v1/worker-detail-update/" + props.accountId + "/", data ,{headers: {Authorization: "Bearer " + localStorage.getItem(TOKEN_NAME)}})
             .then(res =>{
-
 
                 console.log(res)
 

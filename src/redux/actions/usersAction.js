@@ -2,6 +2,11 @@ import  axios from "axios";
 import {API_PATH, TOKEN_NAME} from "../../tools/constants";
 import {UPDATE_STATE} from "../actionTypes/objectsActionType";
 import {toast} from "react-toastify";
+
+
+
+
+
 export function updateState (data){
     return {
         type: UPDATE_STATE,
@@ -138,23 +143,11 @@ export function addUsers(data) {
         axios.post(API_PATH + "account/v1/account-register/", data ,{headers: {Authorization: "Bearer " + localStorage.getItem(TOKEN_NAME)}})
             .then(res =>{
 
-
-
-
-
-
                 toast.success("Успешно добавлен")
-                dispatch(getUsers());
+                // dispatch(getUsers());
                 dispatch(updateState({modalOpen: false}));
                 dispatch(updateState({accountId: res.data.id}));
                 dispatch(updateState({modalOpenEdit: true}));
-
-
-
-
-
-
-
 
             })
             .catch(err =>{

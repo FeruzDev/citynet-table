@@ -111,13 +111,6 @@ const Attendance = (props) => {
 
     const  saveData =  async(record) => {
 
-
-
-
-
-
-
-
         setDis(true)
 
             let arr =[];
@@ -138,18 +131,17 @@ const Attendance = (props) => {
             axios.post(API_PATH + "attendance/v1/attendance-list-create/" , arr, {headers: {Authorization: "Bearer " + localStorage.getItem(TOKEN_NAME)}})
                 .then(res => {
                     toast.success("Успешно добавлен")
-                    // setReason('')
-                    // sethourSelect('')
-                    // setconstructionSelect('')
 
                     axios.get(API_PATH + "account/v1/self-workers-list/", {headers: {Authorization: "Bearer " + localStorage.getItem(TOKEN_NAME)}})
                         .then(res => {
 
-                            setProba(res.data)
+                            if(res.status != 500){
+                                setProba(res.data)
+                            }
+                            else{
+                              alert("333")
 
-
-
-
+                            }
                             // dispatch({type: "CHANGE_LOADING", payload: {pageLoading: false}})
                         })
 
@@ -158,7 +150,7 @@ const Attendance = (props) => {
 
                 })
         }
-
+        //
         // setShow(false);
         // setTimeout(() => {
         //     setShow(true);
@@ -169,8 +161,9 @@ const Attendance = (props) => {
 
 
     const [proba, setProba] = useState([])
+    const [proba2, setProba2] = useState(true)
     useEffect(() => {
-        props.getAttendanceList()
+        // props.getAttendanceList()
         props.hoursLits()
         props.getObjects()
         props.reasonList()
@@ -184,8 +177,9 @@ const Attendance = (props) => {
                 if(res){
                     setProba(res.data)
                 }
-                else{
+                else if(res.data.success === false){
                     setProba([])
+
                 }
 
 
@@ -201,29 +195,42 @@ const Attendance = (props) => {
                 <h2>Список рабочих</h2>
 
             </div>
-            {/*{show ? <Table columns={columns} dataSource={ props.attendanceWorkerList ? props.attendanceWorkerList[0]  ?  props.attendanceWorkerList :[]: []} size="middle"/>*/}
+            {/*{show*/}
+            {/*    ?*/}
+            {/*    <Table columns={columns} dataSource={*/}
+            {/*        props.attendanceWorkerList ?*/}
+            {/*            props.attendanceWorkerList[0]*/}
+
+            {/*        ?*/}
+            {/*                props.attendanceWorkerList :[]: []}*/}
+
+
+            {/*             size="middle"*/}
+
+            {/*    />*/}
             {/* : ""}*/}
 
 
+           <table className="attendace-table">
+                    <thead>
+                    <tr>
+                        <th>Ф.И.О</th>
+                        <th>Телефонный номер</th>
+                        <th>Должность</th>
+                        <th>Oбъект</th>
+                        <th>Время отработало</th>
+                        <th>Причина</th>
+                        <th>Причина</th>
+                        <th>Действие</th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                    {
 
 
-                <table   className="attendace-table">
-                        <thead>
-                            <tr>
-                                <th>Ф.И.О</th>
-                                <th>Телефонный номер</th>
-                                <th>Должность</th>
-                                <th>Oбъект</th>
-                                <th>Время отработало</th>
-                                <th>Причина	</th>
-                                <th>Причина</th>
-                                <th>Действие</th>
-                            </tr>
-                        </thead>
-
-                        <tbody>
-                        {
-                             proba.map((item, index1) =>(
+                        proba2 ? (
+                        proba.map((item, index1) => (
                             <tr key={index1}>
 
                                 <td>
@@ -236,30 +243,10 @@ const Attendance = (props) => {
                                 <td>{item.position_name}</td>
 
                                 <td>
-                                    {/*<Select*/}
-                                    {/*    disabled={ dis1}*/}
-                                    {/*    name="construction" onChange={postFormCon} style={{width: '150px', textAlign: "left"}}*/}
-                                    {/*    showSearch*/}
-                                    {/*    placeholder="Поиск..."*/}
-                                    {/*    optionFilterProp="children"*/}
-                                    {/*    filterOption={(input, option) =>*/}
-                                    {/*        option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0*/}
-                                    {/*    }*/}
-                                    {/*    filterSort={(optionA, optionB) =>*/}
-                                    {/*        optionA.children.toLowerCase().localeCompare(optionB.children.toLowerCase())*/}
-                                    {/*    }*/}
-
-                                    {/*>*/}
-
-
-                                    {/*    {props.objectsList.map((item, index) => (*/}
-                                    {/*        <Option value={item.id}>{item.name} {item.index}</Option>*/}
-                                    {/*    ))}*/}
-                                    {/*</Select>*/}
 
 
                                     <Select
-                                        disabled={ dis1 === index1 ? true : false }
+                                        disabled={dis1 === index1 ? true : false}
 
                                         name="construction"
                                         onChange={(value) => postFormCon(value, index1)}
@@ -276,55 +263,62 @@ const Attendance = (props) => {
                                 </td>
 
 
-
-
                                 <td>
                                     <Select name="working_hours"
-                                            disabled={ dis2 === index1 ? true : false }
+                                            disabled={dis2 === index1 ? true : false}
 
 
                                             onChange={(value) => postForm(value, index1)}
                                             style={{width: '80px'}}>
-                                    <Option value={null}></Option>
-                                    {props.workingHourList.map((item, index) => (
-                                        <Option value={item.hour}>{item.hour} ч {item.index}</Option>
-                                    ))}
-                                </Select>
+                                        <Option value={null}></Option>
+                                        {props.workingHourList.map((item, index) => (
+                                            <Option value={item.hour}>{item.hour} ч </Option>
+                                        ))}
+                                    </Select>
                                 </td>
 
 
                                 <td>
                                     <Select
-                                    name="reason"
-                                    onChange={(value) => reasonEvent(value, index1)}
-                                    style={{width: '180px'}}
-                                    disabled={ (dis3 === index1 && dis4 === index1) ? true : false }
-                                >
-                                    <Option value={null}></Option>
-                                    {props.reasonAllList.map((item, index) => (
-                                        <Option key={index} value={item.id}>{item.reason} </Option>
-                                    ))}
-                                </Select></td>
+                                        name="reason"
+                                        onChange={(value) => reasonEvent(value, index1)}
+                                        style={{width: '180px'}}
+                                        disabled={(dis3 === index1 && dis4 === index1) ? true : false}
+                                    >
+                                        <Option value={null}></Option>
+                                        {props.reasonAllList.map((item, index) => (
+                                            <Option key={index} value={item.id}>{item.reason} </Option>
+                                        ))}
+                                    </Select></td>
                                 <td>
                                     <input type='text '
-                                           disabled={ (dis3 === index1 && dis4 === index1) ? true : false }
-                                           onChange={  reasonContext }
-                                           name='context' /></td>
+                                           disabled={(dis3 === index1 && dis4 === index1) ? true : false}
+                                           onChange={reasonContext}
+                                           name='context'/></td>
 
 
                                 <td>
-                                    <Button className="border-0  pl-1 pr-1 text-secondary"  disabled={ dis} ReactNode icon={<PlusOutlined
-                                        style={{fontSize: '24px', color: "#fff", backgroundColor: "#1F7BBF"}}/>}
-                                            onClick={  () => (dis1===index1 || dis2===index1 || dis3===index1 || dis4===index1) ?  saveData(item.id) :    toast.warning ("Должен быть заполнить") }/>
+                                    <Button className="border-0  pl-1 pr-1 text-secondary" disabled={dis} ReactNode
+                                            icon={<PlusOutlined
+                                                style={{fontSize: '24px', color: "#fff", backgroundColor: "#1F7BBF"}}/>}
+                                            onClick={() => (dis1 === index1 || dis2 === index1 || dis3 === index1 || dis4 === index1) ? saveData(item.id) : toast.warning("Должен быть заполнить")}/>
 
                                 </td>
                             </tr>
 
 
                         ))
-                        }
-                        </tbody>
-                    </table>
+                        )
+
+
+                            :
+
+
+
+                            ''
+                    }
+                    </tbody>
+                </table>
 
 
 

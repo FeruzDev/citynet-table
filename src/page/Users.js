@@ -86,6 +86,12 @@ const Users = (props) => {
     }
 
 
+    const [imgRemoveItem , setimgRemove] = useState(false)
+    const imgRemove = () => {
+        document.getElementById("profileImg").style.display = "none"
+        setimgRemove(!imgRemoveItem)
+
+    }
 
     const columns = [
 
@@ -287,7 +293,7 @@ const Users = (props) => {
     }
 
 
-    const [checked, setChecked] = useState(false)
+    const [checked, setChecked] = useState(true)
 
 
     const [removeObjects, setRemoveObjects] = useState(null)
@@ -338,6 +344,8 @@ const Users = (props) => {
 
     const changeModal = () => {
         props.updateState({modalOpen: !props.modalOpen})
+
+
     }
 
 
@@ -473,12 +481,13 @@ const Users = (props) => {
         data2.append("middle_name", event.target.middle_name.value)
         data2.append("is_header", event.target.is_header.value)
 
-        data2.append("header_worker", event.target.header_worker.value)
+        checked ? console.log("is header")  :     (    data2.append("header_worker", event.target.header_worker.value))
+
         data2.append("children.phone", event.target.phone.value)
         // data2.append("construction", event.target.construction.value)
         data2.append("position", event.target.position.value)
         data2.append("phone", event.target.phone.value)
-        data2.append("image", imagefile.files[0])
+        imgRemoveItem ?     data2.append("image", imagefile.files[0]) : console.log("don't select img")
 
 
 
@@ -622,9 +631,7 @@ const Users = (props) => {
                 </AvForm>
             </Modal>
 
-            <Modal
-            isOpen={props.modalOpenEdit}
-            size='lg'
+            <Modal           isOpen={props.modalOpenEdit}  size='lg'
 
             >
                 {/*<Button onClick={changeModalEdit}  className='mdi_close border-0 p-0 mr-3 mt-1'>   <CloseOutlined  style={{ fontSize: '24px' , color: "#b9b9b9"  }} />*/}
@@ -708,9 +715,11 @@ const Users = (props) => {
                                 ))}
                             </AvField>
 
-                            <input type="file" id="file"
+                            <AvField type="file"
+                                   id="file"
                                    onChange={savePhoto}
-                                   className="form-control"/>
+                                   className="form-control"
+                            />
 
                         </div>
                     </div>
@@ -725,7 +734,7 @@ const Users = (props) => {
 
             <Modal
                 isOpen={props.modalOpenEditAgain}
-                size='lg'>
+                size='lg' toggle={() =>changeModalEditAgain}>
 
                 <AvForm onValidSubmit={editUsersAgain} model={props.userValueData} >
 
@@ -736,16 +745,15 @@ const Users = (props) => {
                                 type="text"
                                 label="Имя"
                                 value={props.userValueData.first_name}
-
                                 required
                             />
 
                             <AvField
                                 name="last_name"
                                 type="text"
+                                label="Фамилия"
                                 value={props.userValueData.last_name}
 
-                                label="Фамилия"
                                 required
                             />
 
@@ -753,24 +761,23 @@ const Users = (props) => {
                             <AvField
                                 name="middle_name"
                                 type="text"
+                                label="Oтчество"
                                 value={props.userValueData.middle_name}
 
-                                label="Oтчество"
                                 required
                             />
 
 
-                            <AvField  onClick={() => setChecked(!checked)} type="checkbox" label="Бригадир"   name="is_header" />
+
+                            <AvField   checked={props.userValueData.is_header  ? true : false} onChange={() => setChecked(!checked)} type="checkbox" label="Бригадир"   name="is_header" />
 
 
                             {
-                                checked ? {header_worker: ''} :
+                                checked ? '' :
 
-                                    <AvField type='select'
-                                             name="header_worker"
-                                             label="Бригадиры"
+                                    <AvField type='select' name="header_worker"
                                              value={props.userValueData.header_worker}
-
+                                             label="Бригадa"
                                              style={{ width: "100%" }}  >
                                         {props.usersList.map(item =>(
                                             <option  value={item.id}>{item.first_name} {item.last_name} {item.middle_name}</option>
@@ -780,12 +787,26 @@ const Users = (props) => {
                             }
 
 
-                            {/*<label>Объекты</label>*/}
-                            {/*<AvField type='select' name="construction"  style={{ width: "100%" }}  >*/}
-                            {/*    {props.objList.map(item =>(*/}
-                            {/*        <option value={item.id}>{item.name}</option>*/}
-                            {/*    ))}*/}
-                            {/*</AvField>*/}
+
+
+                            {/*<AvField   value={checked} type="checkbox" label="Бригадир"   name="is_header" />*/}
+
+
+                            {/*{*/}
+                            {/*    checked ? {header_worker: ''} :*/}
+
+                            {/*        <AvField type='select' name="header_worker"*/}
+                            {/*                 value={props.forModel.header_worker}*/}
+                            {/*                 label="Бригадa"*/}
+                            {/*                 style={{ width: "100%" }}  >*/}
+                            {/*            {props.usersList.map(item =>(*/}
+                            {/*                <option  value={item.id}>{item.first_name} {item.last_name} {item.middle_name}</option>*/}
+                            {/*            ))}*/}
+                            {/*        </AvField>*/}
+
+                            {/*}*/}
+
+
 
 
 
@@ -800,16 +821,12 @@ const Users = (props) => {
                                 value={props.userValueData.phone}
 
                                 required
-                                // value='+998'
                             />
 
 
 
-                            <AvField type='select'
-                                     name="position"
-                                     label="Должность"
+                            <AvField type='select' name="position" label="Должность"
                                      value={props.userValueData.position}
-
                                      style={{ width: "100%" }}  >
                                 {props.positionList.map(item =>(
                                     <option value={item.id}>{item.name}</option>
@@ -820,20 +837,143 @@ const Users = (props) => {
                             <AvField
                                 name="image"
                                 type="file"
-                                label="Profile image "
-                                required
+                                id="file"
+
+                                onChange={imgRemove}
+                                // required
                             />
+
+                            <img src={props.userValueData.image}  id='profileImg' className="profile-img"/>
+
 
                         </div>
                     </div>
 
 
-                    <button className="btn formAddButton  "  >Добавить</button>
+                    <button className="btn formAddButton  "  >Сохарнить</button>
 
                     <button className="btn  formCancel   " onClick={changeModalEditAgain}  >Отмена</button>
 
                 </AvForm>
             </Modal>
+
+            {/*<Modal*/}
+            {/*    isOpen={props.modalOpenEditAgain}*/}
+            {/*    size='lg'>*/}
+
+            {/*    <AvForm onValidSubmit={editUsersAgain} model={props.userValueData} >*/}
+
+            {/*        <div className="row">*/}
+            {/*            <div className="col-md-6">*/}
+            {/*                <AvField*/}
+            {/*                    name="first_name"*/}
+            {/*                    type="text"*/}
+            {/*                    label="Имя"*/}
+            {/*                    value={props.userValueData.first_name}*/}
+
+            {/*                    required*/}
+            {/*                />*/}
+
+            {/*                <AvField*/}
+            {/*                    name="last_name"*/}
+            {/*                    type="text"*/}
+            {/*                    value={props.userValueData.last_name}*/}
+
+            {/*                    label="Фамилия"*/}
+            {/*                    required*/}
+            {/*                />*/}
+
+
+            {/*                <AvField*/}
+            {/*                    name="middle_name"*/}
+            {/*                    type="text"*/}
+            {/*                    value={props.userValueData.middle_name}*/}
+
+            {/*                    label="Oтчество"*/}
+            {/*                    required*/}
+            {/*                />*/}
+
+
+            {/*                <AvField  onClick={() => setChecked(!checked)} type="checkbox" label="Бригадир"   name="is_header" />*/}
+
+
+            {/*                {*/}
+            {/*                    checked ? {header_worker: ''} :*/}
+
+            {/*                        <AvField type='select'*/}
+            {/*                                 name="header_worker"*/}
+            {/*                                 label="Бригадиры"*/}
+            {/*                                 value={props.userValueData.header_worker}*/}
+
+            {/*                                 style={{ width: "100%" }}  >*/}
+            {/*                            {props.usersList.map(item =>(*/}
+            {/*                                <option  value={item.id}>{item.first_name} {item.last_name} {item.middle_name}</option>*/}
+            {/*                            ))}*/}
+            {/*                        </AvField>*/}
+
+            {/*                }*/}
+
+
+            {/*                /!*<label>Объекты</label>*!/*/}
+            {/*                /!*<AvField type='select' name="construction"  style={{ width: "100%" }}  >*!/*/}
+            {/*                /!*    {props.objList.map(item =>(*!/*/}
+            {/*                /!*        <option value={item.id}>{item.name}</option>*!/*/}
+            {/*                /!*    ))}*!/*/}
+            {/*                /!*</AvField>*!/*/}
+
+
+
+            {/*            </div>*/}
+            {/*            <div className="col-md-6">*/}
+
+
+            {/*                <AvField*/}
+            {/*                    name="phone"*/}
+            {/*                    type="text"*/}
+            {/*                    label="Телефон "*/}
+            {/*                    value={props.userValueData.phone}*/}
+
+            {/*                    required*/}
+            {/*                    // value='+998'*/}
+            {/*                />*/}
+
+
+
+            {/*                <AvField type='select'*/}
+            {/*                         name="position"*/}
+            {/*                         label="Должность"*/}
+            {/*                         value={props.userValueData.position}*/}
+
+            {/*                         style={{ width: "100%" }}  >*/}
+            {/*                    {props.positionList.map(item =>(*/}
+            {/*                        <option value={item.id}>{item.name}</option>*/}
+            {/*                    ))}*/}
+            {/*                </AvField>*/}
+
+
+            {/*                <AvField*/}
+            {/*                    name="image"*/}
+            {/*                    type="file"*/}
+            {/*                    // label="Profile image "*/}
+            {/*                    required*/}
+
+
+
+
+            {/*                />*/}
+
+
+            {/*                /!*<img src={props.userValueData.image}  className="profile-img"/>*!/*/}
+            {/*            </div>*/}
+            {/*        </div>*/}
+
+
+            {/*        <button className="btn formAddButton  "  >Сохарнить</button>*/}
+
+            {/*        <button className="btn  formCancel   " onClick={changeModalEditAgain}  >Отмена</button>*/}
+
+            {/*    </AvForm>*/}
+            {/*</Modal>*/}
 
 
 
